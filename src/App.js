@@ -3,6 +3,7 @@ import { Switch, Route, Link } from 'react-router-dom';
 import './App.css';
 
 import HomeComponent from './components/Home';
+import NotFoundComponent from './components/NotFound';
 
 class App extends React.Component {
     constructor(props) {
@@ -22,6 +23,7 @@ class App extends React.Component {
                 <div className="app-content-wrapper">
                     <Switch>
                         <Route path="/" component={HomeComponent} exact />
+                        <Route path="*" component={NotFoundComponent} />
                     </Switch>
                 </div>
             </div>
