@@ -1,4 +1,5 @@
 import React from 'react';
+import endPoints from '../../constants/endpoints';
 
 class SignIn extends React.Component {
     constructor(props) {
@@ -35,7 +36,7 @@ class SignIn extends React.Component {
             },
         };
 
-        fetch('http://localhost:3500/api/v1/auth/signin', fetchData).then((resp) => resp.json()).then((result) => {
+        fetch(endPoints.signIn, fetchData).then((resp) => resp.json()).then((result) => {
             if (result.status === 'error') {
                 throw new Error(result.error);
             }
