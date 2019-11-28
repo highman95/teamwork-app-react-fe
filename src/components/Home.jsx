@@ -1,4 +1,6 @@
 import React from 'react';
+import SignInComponent from './users/SignIn';
+import './Home.css';
 
 class Home extends React.Component {
     constructor(props) {
@@ -16,7 +18,9 @@ class Home extends React.Component {
                     {' '}
                     app
                 </div>
-                <div className="home-sign-in" />
+                <div className="home-sign-in">
+                    <SignInComponent />
+                </div>
             </>
         );
     }
