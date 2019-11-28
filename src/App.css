@@ -87,6 +87,10 @@ button:disabled {
     color: inherit;
 }
 
+button:hover {
+    cursor: pointer;
+}
+
 button.submit-btn {
     background-color: gray;
 }
@@ -102,6 +106,18 @@ a {
 
 .message {
     font-weight: bold;
+    font-size: 13px;
+    padding: 0 3px 3px;
+    text-align: right;
+    display: block;
+}
+
+.message::before {
+    content: "[";
+}
+
+.message::after {
+    content: "]";
 }
 
 .message.error {
