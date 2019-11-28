@@ -19,7 +19,7 @@ class Home extends React.Component {
                     app
                 </div>
                 <div className="home-sign-in">
-                    <SignInComponent />
+                    <SignInComponent {...this.props} />
                 </div>
             </>
         );
