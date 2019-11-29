@@ -1,22 +1,129 @@
-.App {
-  text-align: center;
+/** CSS Document */
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #444444;
 }
 
-.App-logo {
-  height: 40vmin;
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+::-webkit-scrollbar-track {
+    background: #ffffff;
 }
 
-.App-link {
-  color: #09d3ac;
+::-webkit-scrollbar-thumb {
+    background: rgba((160), 160, 160, 0.8);
+}
+
+::selection {
+    background-color: orange; /* crimson */
+}
+
+#app-logo {
+    font-size: 25px;
+    font-weight: bolder;
+}
+
+.app-header {
+    border-bottom: 5px inset #ffa600;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 10px 13px;
+}
+
+.app-content-wrapper {
+    /* margin-left: inherit; */
+    padding: 13px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+textarea {
+    padding: 10px;
+    margin-top: 4px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 2px solid #e3e3e3c4;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+    border-color: skyblue;
+    outline: none;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea {
+    width: 95%;
+    display: block;
+}
+
+button {
+    background: #ada396;
+    padding: 10px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+}
+
+button:disabled {
+    color: inherit;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+button.submit-btn {
+    background-color: gray;
+}
+
+button.delete-btn {
+    background-color: #444444;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.message {
+    font-weight: bold;
+    font-size: 13px;
+    padding: 0 3px 3px;
+    text-align: right;
+    display: block;
+}
+
+.message::before {
+    content: "[";
+}
+
+.message::after {
+    content: "]";
+}
+
+.message.error {
+    color: red;
+}
+
+.message.success {
+    color: cornflowerblue;
 }

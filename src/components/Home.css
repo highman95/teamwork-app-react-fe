@@ -1,0 +1,12 @@
+.home-intro {
+    float: left;
+    margin-right: 31%;
+    display: block;
+}
+
+.home-sign-in {
+    float: right;
+    background-color: #ffffaa;
+    padding: 15px;
+    width: 30%;
+}
