@@ -15,7 +15,7 @@ class Post extends React.Component {
             isLoading: false,
             error: null,
             post: {
-                comments: []
+                comments: [],
             },
         };
     }
@@ -65,19 +65,21 @@ class Post extends React.Component {
                 {error && <span className="message error">{error}</span>}
 
                 {post
-                    ? <div className="">
-                        <div className="post-title">
-                            <Link to={`/post/${post.type}/${post.id}`}>{post.title}</Link>
-                        </div>
+                    ? (
+                        <div className="">
+                            <div className="post-title">
+                                <Link to={`/post/${post.type}/${post.id}`}>{post.title}</Link>
+                            </div>
 
-                        <div className="post-content">
-                            {post.article !== undefined
-                                ? <div className="post-content-text">{post.article}</div>
-                                : <img src={post.url} alt={`${post.title}-${Date.now()}`} className="post-content-image" />}
-                        </div>
+                            <div className="post-content">
+                                {post.article !== undefined
+                                    ? <div className="post-content-text">{post.article}</div>
+                                    : <img src={post.url} alt={`${post.title}-${Date.now()}`} className="post-content-image" />}
+                            </div>
 
-                        {<CommentsComponent comments={comments} />}
-                    </div> : <h4>Post does not exist...</h4>}
+                            <CommentsComponent comments={comments} />
+                        </div>
+                    ) : <h4>Post does not exist...</h4>}
 
             </>
         );

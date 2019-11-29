@@ -8,7 +8,7 @@ class Comments extends React.Component {
 
         this.state = {
             isLoading: false,
-            comments: []
+            comments: [],
         };
     }
 
@@ -34,15 +34,17 @@ class Comments extends React.Component {
 }
 
 Comments.propTypes = {
-    comments: PropTypes.array
-}
-
-const Comment = ({ comment }) => {
-    return (
-        <div className="comment-wrapper">
-            <div className="author-box">User &mdash; {comment.authorId}</div>
-            <div className="comment-box">{comment.comment}</div>
-        </div>);
+    comments: PropTypes.array,
 };
+
+const Comment = ({ comment }) => (
+    <div className="comment-wrapper">
+        <div className="author-box">
+            User &mdash;
+            {comment.authorId}
+        </div>
+        <div className="comment-box">{comment.comment}</div>
+    </div>
+);
 
 export default Comments;
