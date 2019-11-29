@@ -1,0 +1,30 @@
+.post-title {
+    font-weight: bold;
+    font-size: 13px;
+    color: #444444;
+    padding: 5px;
+}
+
+.post-title a {
+    color: #444444;
+}
+
+.post-title a:hover {
+    text-decoration: underline;
+}
+
+.post-content {
+    font-size: 12px;
+    border: thin solid #ada396;
+    padding: 4px;
+    margin-bottom: 20px;
+    min-height: 50px;
+}
+
+.post-content-text {
+    color: #777777;
+}
+
+.post-content-image {
+    max-height: 300px;
+}
