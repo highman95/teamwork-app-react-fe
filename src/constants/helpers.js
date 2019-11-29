@@ -2,13 +2,9 @@ const storageId = 'qoqxTMwk';
 
 export const isLoggedIn = (localStorage.getItem(storageId) !== null);
 
-export const fetchToken = () => {
-    return (isLoggedIn ? JSON.parse(localStorage.getItem(storageId)).token : null);
-}
+export const fetchToken = () => (isLoggedIn ? JSON.parse(localStorage.getItem(storageId)).token : null);
 
-export const fetchFirstName = () => {
-    return (isLoggedIn ? JSON.parse(localStorage.getItem(storageId)).firstName : null);
-}
+export const fetchFirstName = () => (isLoggedIn ? JSON.parse(localStorage.getItem(storageId)).firstName : null);
 
 export const registerAuth = ({ token, firstName = '' }) => {
     try {
@@ -17,4 +13,4 @@ export const registerAuth = ({ token, firstName = '' }) => {
     } catch (error) {
         return false;
     }
-}
+};
