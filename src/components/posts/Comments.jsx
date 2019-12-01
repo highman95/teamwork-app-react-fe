@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import CommentForm from './CommentForm';
 import './Comment.css';
 
 class Comments extends React.Component {
@@ -9,40 +11,66 @@ class Comments extends React.Component {
         this.state = {
             isLoading: false,
             comments: [],
+            postId: '',
+            postType: '',
         };
+
+        this.handleCommentsChange = this.handleCommentsChange.bind(this);
     }
 
     static getDerivedStateFromProps(props, state) {
-        const { comments } = props;
-        const { comments: commentsState } = state;
+        const { comments, postId, postType } = props;
+        const { comments: commentsFromState, postId: postIdFromState } = state;
+        const hasSamePropsAsState = (comments.length === commentsFromState.length && postId === postIdFromState);
 
-        return (comments.length === commentsState.length) ? null : { comments };
+        return hasSamePropsAsState ? null : { comments, postId, postType };
+    }
+
+    handleCommentsChange(comment) {
+        const { comments } = this.state;
+        comments.push(comment);
+
+        this.setState({ ...comments });
     }
 
     render() {
-        const { isLoading, comments } = this.state;
+        const {
+            isLoading, comments, postId, postType,
+        } = this.state;
         const commentsMap = comments && comments.map((comment) => <Comment key={comment.commentId} comment={comment} />);
 
         return (
             <>
-                {isLoading && <div className="loading-box">Loading Comments...</div>}
-                <div className="post-comments-box">
-                    {commentsMap}
-                </div>
+                {isLoading
+                    ? <div className="loading-box">Loading Comments...</div>
+                    : (
+                        <div className="post-comments-box">
+                            {commentsMap}
+                            <CommentForm postId={postId} postType={postType} onCommentSave={this.handleCommentsChange} />
+                        </div>
+                    )}
             </>
         );
     }
 }
 
+Comments.defaultProps = {
+    comments: [],
+    postId: '',
+    postType: '',
+};
+
 Comments.propTypes = {
     comments: PropTypes.array,
+    postId: PropTypes.string.isRequired,
+    postType: PropTypes.string.isRequired,
 };
 
 const Comment = ({ comment }) => (
     <div className="comment-wrapper">
         <div className="comment-box">{comment.comment}</div>
         <div className="author-box">
-            {comment.authorName || `User - ${comment.authorId}`}
+            {comment.authorName || `User-${comment.authorId}`}
         </div>
     </div>
 );

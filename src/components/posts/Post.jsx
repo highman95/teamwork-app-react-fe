@@ -28,17 +28,16 @@ class Post extends React.Component {
         } else {
             const { match: { params: { postType, postId } } } = this.props;
 
-            if (postId !== undefined) {
-                const isGifPost = (postType === 'gif');
-                this.fetchPost(postId, isGifPost);
+            if (postId !== undefined && postType !== undefined) {
+                this.fetchPost(postId, postType);
             }
         }
     }
 
-    async fetchPost(postId, isGifPost) {
+    async fetchPost(postId, postType) {
         this.setState({ error: null, isLoading: true });
 
-        const url = isGifPost ? endPoints.gifs : endPoints.articles;
+        const url = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
         const fetchConfig = {
             headers: {
                 'Content-Type': 'application/json',
@@ -61,25 +60,27 @@ class Post extends React.Component {
 
         return (
             <>
-                {isLoading && <div className="loading-box">Loading Post...</div>}
                 {error && <span className="message error">{error}</span>}
 
-                {post
-                    ? (
-                        <div className="">
-                            <div className="post-title">
-                                <Link to={`/post/${post.type}/${post.id}`}>{post.title}</Link>
-                            </div>
+                {isLoading
+                    ? <div className="loading-box">Loading Post...</div>
+                    : (post
+                        ? (
+                            <div className="">
+                                <div className="post-title">
+                                    <Link to={`/post/${post.type}/${post.id}`}>{post.title}</Link>
+                                </div>
 
-                            <div className="post-content">
-                                {post.article !== undefined
-                                    ? <div className="post-content-text">{post.article}</div>
-                                    : <img src={post.url} alt={`${post.title}-${Date.now()}`} className="post-content-image" />}
-                            </div>
+                                <div className="post-content">
+                                    {post.article !== undefined
+                                        ? <div className="post-content-text">{post.article}</div>
+                                        : <img src={post.url} alt={`${post.title}-${Date.now()}`} className="post-content-image" />}
+                                </div>
 
-                            <CommentsComponent comments={comments} />
-                        </div>
-                    ) : <h4>Post does not exist...</h4>}
+                                <CommentsComponent comments={comments} postId={post.id} postType={post.type} />
+                            </div>
+                        )
+                        : <h4>Post does not exist...</h4>)}
 
             </>
         );
