@@ -27,31 +27,30 @@ class Post extends React.Component {
             this.setState({ post });
         } else {
             const { match: { params: { postType, postId } } } = this.props;
-
-            if (postId !== undefined && postType !== undefined) {
-                this.fetchPost(postId, postType);
-            }
+            this.fetchPost(postId, postType);
         }
     }
 
     async fetchPost(postId, postType) {
-        this.setState({ error: null, isLoading: true });
+        if (postId !== undefined && postType !== undefined) {
+            this.setState({ error: null, isLoading: true });
 
-        const url = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
-        const fetchConfig = {
-            headers: {
-                'Content-Type': 'application/json',
-                token: fetchToken(),
-            },
-        };
+            const url = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
+            const fetchConfig = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    token: fetchToken(),
+                },
+            };
 
-        await fetch(`${url}/${postId}`, fetchConfig).then((resp) => resp.json()).then((result) => {
-            if (result.status === 'error') {
-                throw new Error(result.error);
-            }
+            await fetch(`${url}/${postId}`, fetchConfig).then((resp) => resp.json()).then((result) => {
+                if (result.status === 'error') {
+                    throw new Error(result.error);
+                }
 
-            this.setState({ isLoading: false, error: null, post: result.data });
-        }).catch((e) => this.setState({ isLoading: false, error: e.message || e.error.message }));
+                this.setState({ isLoading: false, error: null, post: result.data });
+            }).catch((e) => this.setState({ isLoading: false, error: e.message || e.error.message }));
+        }
     }
 
     render() {
