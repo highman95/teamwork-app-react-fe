@@ -54,6 +54,7 @@ class Post extends React.Component {
     }
 
     render() {
+        const { showComments } = this.props;
         const { isLoading, error, post } = this.state;
         const { comments } = post;
 
@@ -76,7 +77,7 @@ class Post extends React.Component {
                                         : <img src={post.url} alt={`${post.title}-${Date.now()}`} className="post-content-image" />}
                                 </div>
 
-                                <CommentsComponent comments={comments} postId={post.id} postType={post.type} />
+                                {showComments && <CommentsComponent comments={comments} postId={post.id} postType={post.type} />}
                             </div>
                         )
                         : <h4>Post does not exist...</h4>)}
@@ -87,11 +88,13 @@ class Post extends React.Component {
 }
 
 Post.defaultProps = {
+    showComments: true,
     showTrimmed: false,
     post: {},
 };
 
 Post.propTypes = {
+    showComments: PropTypes.bool,
     showTrimmed: PropTypes.bool,
     post: PropTypes.object || null,
 };
