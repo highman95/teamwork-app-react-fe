@@ -39,13 +39,16 @@ class Feed extends React.Component {
     }
 
     render() {
-        const { isLoading, feeds } = this.state;
+        const { isLoading, error, feeds } = this.state;
         const feedsMap = feeds.map((post, index) => <Post key={index} showTrimmed post={post} />);
 
         return (
             <>
-                {isLoading && <div className="loading-box">Loading...</div>}
-                {feedsMap}
+                {error && <span className="message error">{error}</span>}
+
+                {isLoading
+                    ? <div className="loading-box">Loading Feeds...</div>
+                    : feedsMap}
             </>
         );
     }
