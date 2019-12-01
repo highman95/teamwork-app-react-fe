@@ -12,14 +12,15 @@ class Comments extends React.Component {
         };
     }
 
-    componentDidMount() {
-        const { comments } = this.props;
-        this.setState({ comments });
+    static getDerivedStateFromProps(props, state) {
+        const { comments } = props;
+        const { comments: commentsState } = state;
+
+        return (comments.length === commentsState.length) ? null : { comments };
     }
 
     render() {
-        const { isLoading } = this.state;
-        const { comments } = this.props;
+        const { isLoading, comments } = this.state;
         const commentsMap = comments && comments.map((comment) => <Comment key={comment.commentId} comment={comment} />);
 
         return (
@@ -39,11 +40,10 @@ Comments.propTypes = {
 
 const Comment = ({ comment }) => (
     <div className="comment-wrapper">
-        <div className="author-box">
-            User &mdash;
-            {comment.authorId}
-        </div>
         <div className="comment-box">{comment.comment}</div>
+        <div className="author-box">
+            {comment.authorName || `User - ${comment.authorId}`}
+        </div>
     </div>
 );
 
