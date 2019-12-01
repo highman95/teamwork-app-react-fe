@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route, Link, NavLink } from 'react-router-dom';
 import AuthenticatedRoute from './components/AuthenticatedRoute';
 import './App.css';
 
@@ -21,6 +21,14 @@ class App extends React.Component {
                     <Link to="/">
                         <span id="app-logo">TeamWork</span>
                     </Link>
+
+                    <div className="nav-menu-wrapper">
+                        <ul className="nav-menu">
+                            <li><NavLink to="/">Home</NavLink></li>
+                            <li><NavLink to="/feed">Feed</NavLink></li>
+                            <li><NavLink to="/logout">Logout</NavLink></li>
+                        </ul>
+                    </div>
                 </header>
 
                 <div className="app-content-wrapper">
