@@ -41,6 +41,27 @@ body {
     padding: 10px 13px;
 }
 
+.app-header ul {
+    font-size: 14px;
+    list-style: none;
+    padding: 0;
+    margin-bottom: -3px;
+}
+
+.app-header ul li {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.app-header ul li:last-child {
+    margin-right: 0;
+}
+
+ul.nav-menu a {
+    background-color: #ada396;
+    padding: 7px;
+}
+
 .app-content-wrapper {
     /* margin-left: inherit; */
     padding: 13px;
