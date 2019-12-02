@@ -13,6 +13,13 @@
     text-decoration: underline;
 }
 
+.post-edit-link {
+    font-size: 13px;
+    font-weight: normal;
+    text-decoration: underline;
+    color: #ada396;
+}
+
 .post-content {
     font-size: 12px;
     border: thin solid #ada396;
