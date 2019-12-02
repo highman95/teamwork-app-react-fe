@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import endPoints from '../../constants/endpoints';
 import { fetchToken } from '../../constants/helpers';
@@ -16,6 +15,17 @@ export function CreateArticlePost() {
     );
 }
 
+export function EditArticlePost(props) {
+    const { postId } = props.match.params;
+    return (
+        <>
+            <h3>Edit Article</h3>
+            <hr />
+            <ArticlePostForm postId={postId} />
+        </>
+    );
+}
+
 class ArticlePostForm extends React.Component {
     constructor(props) {
         super(props);
@@ -26,10 +36,21 @@ class ArticlePostForm extends React.Component {
             error: null,
             title: '',
             article: '',
+            postId: props.postId || 0
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
+    }
+
+    componentDidMount() {
+        const { postId, isSaving } = this.state;
+
+        if (postId !== 0) {
+            this.setState({ isSaving: true });
+            this.fetchPost(postId, 'article');
+            this.setState({ isSaving });
+        }
     }
 
     handleChange(event) {
@@ -40,8 +61,13 @@ class ArticlePostForm extends React.Component {
     handleSave(event) {
         event.preventDefault();
 
-        const { title, article } = this.state;
-        this.addPost(title, article);
+        const { title, article, postId } = this.state;
+
+        if (postId === 0) {
+            this.addPost(title, article);
+        } else {
+            this.udpatePost(postId, title, article)
+        }
     }
 
     async addPost(title, article) {
@@ -75,6 +101,54 @@ class ArticlePostForm extends React.Component {
                 // document.querySelector('#post-form-reporter').innerHTML += showPost();
 
                 this.setState({ isSaving: false, message, error: null, title: '', article: '' });
+            }).catch((e) => this.setState({ isSaving: false, message: null, error: e.message || e.error.message }));
+        }
+    }
+
+    async fetchPost(postId, postType) {
+        if (postId !== undefined && postId !== 0 && postType !== undefined) {
+            this.setState({ error: null, isLoading: true });
+
+            const url = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
+            const fetchConfig = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    token: fetchToken(),
+                },
+            };
+
+            await fetch(`${url}/${postId}`, fetchConfig).then((resp) => resp.json()).then((result) => {
+                if (result.status === 'error') {
+                    throw new Error(result.error);
+                }
+
+                const { title, article } = result.data;
+                this.setState({ isLoading: false, error: null, title, article });
+            }).catch((e) => this.setState({ isLoading: false, error: e.message || e.error.message }));
+        }
+    }
+
+    async udpatePost(postId, title, article) {
+        if (postId !== undefined && title !== undefined && article !== undefined) {
+            this.setState({ isSaving: true, message: null, error: null });
+
+            const fetchConfig = {
+                method: 'PATCH',
+                mode: 'cors',
+                body: JSON.stringify({ title, article }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    token: fetchToken(),
+                },
+            };
+
+            await fetch(`${endPoints.articles}/${postId}`, fetchConfig).then((resp) => resp.json()).then((result) => {
+                if (result.status === 'error') {
+                    throw new Error(result.error);
+                }
+
+                const { message } = result.data;
+                this.setState({ isSaving: false, message, error: null });
             }).catch((e) => this.setState({ isSaving: false, message: null, error: e.message || e.error.message }));
         }
     }
