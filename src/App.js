@@ -6,7 +6,7 @@ import './App.css';
 import HomeComponent from './components/Home';
 import FeedComponent from './components/posts/Feed';
 import PostComponent from './components/posts/Post';
-import { CreateArticlePost } from './components/posts/ArticlePostForm';
+import { CreateArticlePost, EditArticlePost } from './components/posts/ArticlePostForm';
 import NotFoundComponent from './components/NotFound';
 
 class App extends React.Component {
@@ -37,6 +37,7 @@ class App extends React.Component {
                         <Route path="/" component={HomeComponent} exact />
                         <AuthenticatedRoute path="/feed" component={FeedComponent} exact />
                         <AuthenticatedRoute path="/article/create" component={CreateArticlePost} exact />
+                        <AuthenticatedRoute path="/article/edit/:postId" component={EditArticlePost} exact />
                         <AuthenticatedRoute path="/post/:postType/:postId" component={PostComponent} exact />
                         <Route path="*" component={NotFoundComponent} />
                     </Switch>
