@@ -13,13 +13,18 @@
     text-decoration: underline;
 }
 
-.post-edit-link {
+.post-task-link {
     font-size: 13px;
     font-weight: normal;
     text-decoration: underline;
 }
 
-.post-edit-link a {
+.post-task-link a.edit-link {
+    color: #059fc5;
+    margin-right: 20px;
+}
+
+.post-task-link a.delete-link {
     color: #c54c05;
 }
 
