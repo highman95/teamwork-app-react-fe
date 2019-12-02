@@ -1,0 +1,19 @@
+.post-form-display {
+    float: left;
+    width: 65%;
+}
+
+#post-form-reporter {
+    width: 34%;
+    border: 1px dotted #cccccc;
+    /* min-height: 20px; */
+    padding: 3px;
+    display: inline-block;
+    border-radius: 5px;
+}
+
+#post-form-reporter div {
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: bisque;
+}

@@ -72,6 +72,13 @@ label {
     font-weight: bold;
 }
 
+hr {
+    height: 1px;
+    border-width: 0;
+    color: gray;
+    background-color: gray;
+}
+
 input[type="text"],
 input[type="password"],
 input[type="email"],
