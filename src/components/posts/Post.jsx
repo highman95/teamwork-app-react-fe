@@ -69,8 +69,9 @@ class Post extends React.Component {
                             <div className="">
                                 <div className="post-title">
                                     <Link to={`/post/${post.type}/${post.id}`}>{post.title}</Link>
-                                    <div className="post-edit-link">
-                                        <Link to={`/${post.type}/edit/${post.id}`}>Edit</Link>
+                                    <div className="post-task-link">
+                                        {(post.type === 'article') && <Link to={`/${post.type}/edit/${post.id}`} className="edit-link">Edit</Link>}
+                                        <Link to={`/${post.type}/delete/${post.id}`} className="delete-link">Delete</Link>
                                     </div>
                                 </div>
 
