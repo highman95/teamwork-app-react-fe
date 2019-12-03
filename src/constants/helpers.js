@@ -1,4 +1,4 @@
-const storageId = 'qoqxTMwk';
+export const storageId = 'qoqxTMwk';
 
 export const isLoggedIn = (localStorage.getItem(storageId) !== null);
 

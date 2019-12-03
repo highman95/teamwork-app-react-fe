@@ -9,6 +9,7 @@ import PostComponent from './components/posts/Post';
 import { CreateArticlePost, EditArticlePost } from './components/posts/ArticlePostForm';
 import { CreateGifPost } from './components/posts/GifPostForm';
 import DeletePostComponent from './components/posts/DeletePost';
+import { CreateUserAccount } from './components/users/UserForm'
 import NotFoundComponent from './components/NotFound';
 
 class App extends React.Component {
@@ -31,6 +32,7 @@ class App extends React.Component {
                             <li><NavLink to="/feed">Feed</NavLink></li>
                             <li><NavLink to="/article/create">Add Article</NavLink></li>
                             <li><NavLink to="/gif/create">Add Gif</NavLink></li>
+                            <li><NavLink to="/user/create">Add User</NavLink></li>
                             <li><NavLink to="/logout">Logout</NavLink></li>
                         </ul>
                     </div>
@@ -45,6 +47,7 @@ class App extends React.Component {
                         <AuthenticatedRoute path="/gif/create" component={CreateGifPost} exact />
                         <AuthenticatedRoute path="/post/:postType/:postId" component={PostComponent} exact />
                         <AuthenticatedRoute path="/:postType/delete/:postId" component={DeletePostComponent} exact />
+                        <Route path="/user/create" component={CreateUserAccount} exact />
                         <Route path="*" component={NotFoundComponent} />
                     </Switch>
                 </div>
