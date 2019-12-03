@@ -27,59 +27,64 @@ class Post extends React.Component {
             this.setState({ post });
         } else {
             const { match: { params: { postType, postId } } } = this.props;
-
-            if (postId !== undefined) {
-                const isGifPost = (postType === 'gif');
-                this.fetchPost(postId, isGifPost);
-            }
+            this.fetchPost(postId, postType);
         }
     }
 
-    async fetchPost(postId, isGifPost) {
-        this.setState({ error: null, isLoading: true });
+    async fetchPost(postId, postType) {
+        if (postId !== undefined && postType !== undefined) {
+            this.setState({ error: null, isLoading: true });
 
-        const url = isGifPost ? endPoints.gifs : endPoints.articles;
-        const fetchConfig = {
-            headers: {
-                'Content-Type': 'application/json',
-                token: fetchToken(),
-            },
-        };
+            const url = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
+            const fetchConfig = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    token: fetchToken(),
+                },
+            };
 
-        await fetch(`${url}/${postId}`, fetchConfig).then((resp) => resp.json()).then((result) => {
-            if (result.status === 'error') {
-                throw new Error(result.error);
-            }
+            await fetch(`${url}/${postId}`, fetchConfig).then((resp) => resp.json()).then((result) => {
+                if (result.status === 'error') {
+                    throw new Error(result.error);
+                }
 
-            this.setState({ isLoading: false, error: null, post: result.data });
-        }).catch((e) => this.setState({ isLoading: false, error: e.message || e.error.message }));
+                this.setState({ isLoading: false, error: null, post: result.data });
+            }).catch((e) => this.setState({ isLoading: false, error: e.message || e.error.message }));
+        }
     }
 
     render() {
+        const { showComments } = this.props;
         const { isLoading, error, post } = this.state;
         const { comments } = post;
 
         return (
             <>
-                {isLoading && <div className="loading-box">Loading Post...</div>}
                 {error && <span className="message error">{error}</span>}
 
-                {post
-                    ? (
-                        <div className="">
-                            <div className="post-title">
-                                <Link to={`/post/${post.type}/${post.id}`}>{post.title}</Link>
-                            </div>
+                {isLoading
+                    ? <div className="loading-box">Loading Post...</div>
+                    : (post
+                        ? (
+                            <div className="">
+                                <div className="post-title">
+                                    <Link to={`/post/${post.type}/${post.id}`}>{post.title}</Link>
+                                    <div className="post-task-link">
+                                        {(post.type === 'article') && <Link to={`/${post.type}/edit/${post.id}`} className="edit-link">Edit</Link>}
+                                        <Link to={`/${post.type}/delete/${post.id}`} className="delete-link">Delete</Link>
+                                    </div>
+                                </div>
 
-                            <div className="post-content">
-                                {post.article !== undefined
-                                    ? <div className="post-content-text">{post.article}</div>
-                                    : <img src={post.url} alt={`${post.title}-${Date.now()}`} className="post-content-image" />}
-                            </div>
+                                <div className="post-content">
+                                    {post.article !== undefined
+                                        ? <div className="post-content-text">{post.article}</div>
+                                        : <img src={post.url} alt={`${post.title}-${Date.now()}`} className="post-content-image" />}
+                                </div>
 
-                            <CommentsComponent comments={comments} />
-                        </div>
-                    ) : <h4>Post does not exist...</h4>}
+                                {showComments && <CommentsComponent comments={comments} postId={post.id} postType={post.type} />}
+                            </div>
+                        )
+                        : <h4>Post does not exist...</h4>)}
 
             </>
         );
@@ -87,11 +92,13 @@ class Post extends React.Component {
 }
 
 Post.defaultProps = {
+    showComments: true,
     showTrimmed: false,
     post: {},
 };
 
 Post.propTypes = {
+    showComments: PropTypes.bool,
     showTrimmed: PropTypes.bool,
     post: PropTypes.object || null,
 };

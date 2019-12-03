@@ -7,4 +7,6 @@ export default {
     feeds: `${url}/feed`,
     articles: `${url}/articles`,
     gifs: `${url}/gifs`,
+    roles: `${url}/roles`,
+    departments: `${url}/departments`,
 };
