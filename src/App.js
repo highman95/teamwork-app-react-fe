@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Route, Link, NavLink } from 'react-router-dom';
+import { isLoggedIn } from './constants/helpers';
 import AuthenticatedRoute from './components/AuthenticatedRoute';
 import './App.css';
 
@@ -29,11 +30,15 @@ class App extends React.Component {
                     <div className="nav-menu-wrapper">
                         <ul className="nav-menu">
                             <li><NavLink to="/">Home</NavLink></li>
-                            <li><NavLink to="/feed">Feed</NavLink></li>
-                            <li><NavLink to="/article/create">Add Article</NavLink></li>
-                            <li><NavLink to="/gif/create">Add Gif</NavLink></li>
-                            <li><NavLink to="/user/create">Add User</NavLink></li>
-                            <li><NavLink to="/logout">Logout</NavLink></li>
+                            {isLoggedIn && (
+                                <>
+                                    <li><NavLink to="/feed">Feed</NavLink></li>
+                                    <li><NavLink to="/article/create">Add Article</NavLink></li>
+                                    <li><NavLink to="/gif/create">Add Gif</NavLink></li>
+                                    <li><NavLink to="/user/create">Add User</NavLink></li>
+                                    <li><NavLink to="/logout">Logout</NavLink></li>
+                                </>
+                            )}
                         </ul>
                     </div>
                 </header>

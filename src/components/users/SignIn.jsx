@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import endPoints from '../../constants/endpoints';
+import { storageId } from '../../constants/helpers';
 
 class SignIn extends React.Component {
     constructor(props) {
@@ -13,7 +15,7 @@ class SignIn extends React.Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleSignIn = this.handleSignIn.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(event) {
@@ -21,7 +23,7 @@ class SignIn extends React.Component {
         this.setState({ [name]: value });
     }
 
-    handleSignIn(event) {
+    handleSubmit(event) {
         event.preventDefault();
         this.setState({ error: null, isSigningIn: true });
 
@@ -42,10 +44,9 @@ class SignIn extends React.Component {
             }
 
             const { token, firstName } = result.data;
-            localStorage.setItem('qoqxTMwk', JSON.stringify({ token, firstName }));
+            localStorage.setItem(storageId, JSON.stringify({ token, firstName }));
             this.setState({ error: null, isSigningIn: false, password: '' });
-
-            history.push('/feed');
+            window.location = '/feed';
         }).catch((e) => this.setState({ error: e.message || e.error.message, isSigningIn: false, password: '' }));
     }
 
@@ -74,14 +75,16 @@ class SignIn extends React.Component {
                     </div>
 
                     <div className="form-group">
-                        <button type="submit" onClick={this.handleSignIn} disabled={isSigningIn}>
+                        <button type="submit" onClick={this.handleSubmit} disabled={isSigningIn}>
                             {isSigningIn ? 'Signing in...' : 'Sign in'}
                         </button>
+                        {' '}
+                        <Link to="/user/create">Sign UP!</Link>
                     </div>
                 </form>
             </>
-        );
-    }
-}
-
-export default SignIn;
+                );
+            }
+        }
+        
+        export default SignIn;
