@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/teamwork-app-react-fe/static/css/main.8371f471.chunk.css",
-    "main.js": "/teamwork-app-react-fe/static/js/main.ed7b2d0b.chunk.js",
-    "main.js.map": "/teamwork-app-react-fe/static/js/main.ed7b2d0b.chunk.js.map",
+    "main.css": "/teamwork-app-react-fe/static/css/main.550e3131.chunk.css",
+    "main.js": "/teamwork-app-react-fe/static/js/main.200e80d9.chunk.js",
+    "main.js.map": "/teamwork-app-react-fe/static/js/main.200e80d9.chunk.js.map",
     "runtime-main.js": "/teamwork-app-react-fe/static/js/runtime-main.24c3fdae.js",
     "runtime-main.js.map": "/teamwork-app-react-fe/static/js/runtime-main.24c3fdae.js.map",
-    "static/js/2.f3c68b18.chunk.js": "/teamwork-app-react-fe/static/js/2.f3c68b18.chunk.js",
-    "static/js/2.f3c68b18.chunk.js.map": "/teamwork-app-react-fe/static/js/2.f3c68b18.chunk.js.map",
+    "static/js/2.869e6b91.chunk.js": "/teamwork-app-react-fe/static/js/2.869e6b91.chunk.js",
+    "static/js/2.869e6b91.chunk.js.map": "/teamwork-app-react-fe/static/js/2.869e6b91.chunk.js.map",
     "index.html": "/teamwork-app-react-fe/index.html",
-    "precache-manifest.ce448f6e35c4775fd20d8d6dc6a87338.js": "/teamwork-app-react-fe/precache-manifest.ce448f6e35c4775fd20d8d6dc6a87338.js",
+    "precache-manifest.af9a288a1741252a7cbaaa9ab675a5c7.js": "/teamwork-app-react-fe/precache-manifest.af9a288a1741252a7cbaaa9ab675a5c7.js",
     "service-worker.js": "/teamwork-app-react-fe/service-worker.js",
-    "static/css/main.8371f471.chunk.css.map": "/teamwork-app-react-fe/static/css/main.8371f471.chunk.css.map"
+    "static/css/main.550e3131.chunk.css.map": "/teamwork-app-react-fe/static/css/main.550e3131.chunk.css.map"
   },
   "entrypoints": [
     "static/js/runtime-main.24c3fdae.js",
-    "static/js/2.f3c68b18.chunk.js",
-    "static/css/main.8371f471.chunk.css",
-    "static/js/main.ed7b2d0b.chunk.js"
+    "static/js/2.869e6b91.chunk.js",
+    "static/css/main.550e3131.chunk.css",
+    "static/js/main.200e80d9.chunk.js"
   ]
 }
