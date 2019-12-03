@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/teamwork-app-react-fe/static/css/main.550e3131.chunk.css",
-    "main.js": "/teamwork-app-react-fe/static/js/main.200e80d9.chunk.js",
-    "main.js.map": "/teamwork-app-react-fe/static/js/main.200e80d9.chunk.js.map",
+    "main.js": "/teamwork-app-react-fe/static/js/main.14df476e.chunk.js",
+    "main.js.map": "/teamwork-app-react-fe/static/js/main.14df476e.chunk.js.map",
     "runtime-main.js": "/teamwork-app-react-fe/static/js/runtime-main.24c3fdae.js",
     "runtime-main.js.map": "/teamwork-app-react-fe/static/js/runtime-main.24c3fdae.js.map",
     "static/js/2.869e6b91.chunk.js": "/teamwork-app-react-fe/static/js/2.869e6b91.chunk.js",
     "static/js/2.869e6b91.chunk.js.map": "/teamwork-app-react-fe/static/js/2.869e6b91.chunk.js.map",
     "index.html": "/teamwork-app-react-fe/index.html",
-    "precache-manifest.af9a288a1741252a7cbaaa9ab675a5c7.js": "/teamwork-app-react-fe/precache-manifest.af9a288a1741252a7cbaaa9ab675a5c7.js",
+    "precache-manifest.fe5a79715eac86a7b505f051a2a2de0e.js": "/teamwork-app-react-fe/precache-manifest.fe5a79715eac86a7b505f051a2a2de0e.js",
     "service-worker.js": "/teamwork-app-react-fe/service-worker.js",
     "static/css/main.550e3131.chunk.css.map": "/teamwork-app-react-fe/static/css/main.550e3131.chunk.css.map"
   },
@@ -16,6 +16,6 @@
     "static/js/runtime-main.24c3fdae.js",
     "static/js/2.869e6b91.chunk.js",
     "static/css/main.550e3131.chunk.css",
-    "static/js/main.200e80d9.chunk.js"
+    "static/js/main.14df476e.chunk.js"
   ]
 }
