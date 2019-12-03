@@ -27,7 +27,6 @@ class SignIn extends React.Component {
         event.preventDefault();
         this.setState({ error: null, isSigningIn: true });
 
-        const { history } = this.props;
         const { email, password } = this.state;
         const fetchData = {
             method: 'POST',

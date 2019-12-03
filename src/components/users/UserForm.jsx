@@ -27,8 +27,8 @@ class UserForm extends React.Component {
             email: '',
             password: '',
             gender: 'male',
-            jobRole: null,
-            department: null,
+            jobRole: '',
+            department: '',
             address: '',
         };
 
