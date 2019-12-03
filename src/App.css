@@ -59,7 +59,8 @@ body {
 
 ul.nav-menu a {
     background-color: #ada396;
-    padding: 7px;
+    font-size: 12px;
+    padding: 6px 7px;
 }
 
 .app-content-wrapper {
