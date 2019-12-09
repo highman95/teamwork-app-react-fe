@@ -40,7 +40,7 @@ class Feed extends React.Component {
 
     render() {
         const { isLoading, error, feeds } = this.state;
-        const feedsMap = feeds.map((post, index) => <Post key={index} showComments={false} post={post} />);
+        const feedsMap = feeds.map((post) => <Post key={post.id} showComments={false} post={post} />);
 
         return (
             <>

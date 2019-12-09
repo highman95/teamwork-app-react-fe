@@ -12,6 +12,17 @@ export function CreateUserAccount() {
     );
 }
 
+export function EdiUserAccount() {
+    return (
+        <>
+            <h3>Edit User Account</h3>
+            <hr />
+            <UserForm />
+        </>
+    );
+}
+
+
 class UserForm extends React.Component {
     constructor(props) {
         super(props);
@@ -46,12 +57,14 @@ class UserForm extends React.Component {
             mode: 'cors',
         };
 
-        await fetch(endPoints.roles, fetchConfig).then(resp => resp.json()).then(result => {
-            fetch(endPoints.departments, fetchConfig).then(resp => resp.json()).then(result_2 => {
+        await fetch(endPoints.roles, fetchConfig).then((resp) => resp.json()).then((result) => {
+            fetch(endPoints.departments, fetchConfig).then((resp) => resp.json()).then((result2) => {
                 const jobRoles = result.data;
-                const departments = result_2.data;
+                const departments = result2.data;
 
-                this.setState({ isRequesting: false, jobRole: jobRoles[0].name, jobRoles, department: departments[0].name, departments });
+                this.setState({
+                    isRequesting: false, jobRole: jobRoles[0].name, jobRoles, department: departments[0].name, departments,
+                });
             }).catch((e) => this.setState({ error: e.message || e.error.message, isRequesting: false }));
         }).catch((e) => this.setState({ error: e.message || e.error.message, isRequesting: false }));
     }
@@ -64,7 +77,9 @@ class UserForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        const { firstName, lastName, email, password, gender, jobRole, department, address } = this.state;
+        const {
+            firstName, lastName, email, password, gender, jobRole, department, address,
+        } = this.state;
         this.addUser(firstName, lastName, email, password, gender, jobRole, department, address);
     }
 
@@ -73,19 +88,33 @@ class UserForm extends React.Component {
         const fetchConfig = {
             method: 'POST',
             mode: 'cors',
-            body: JSON.stringify({ firstName, lastName, email, password, gender, jobRole, department, address }),
+            body: JSON.stringify({
+                firstName, lastName, email, password, gender, jobRole, department, address,
+            }),
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
         };
 
-        await fetch(endPoints.signUp, fetchConfig).then(resp => resp.json()).then(result => {
+        await fetch(endPoints.signUp, fetchConfig).then((resp) => resp.json()).then((result) => {
             if (result.status === 'error') {
                 throw new Error(result.error);
             }
 
-            const { message, token, firstName } = result.data;
-            this.setState({ isRequesting: false, message, error: null, firstName: '', lastName: '', email: '', password: '', gender: '', jobRole: '', department: '', address: '' });
+            const { message, token } = result.data;
+            this.setState({
+                isRequesting: false,
+                message,
+                error: null,
+                firstName: '',
+                lastName: '',
+                email: '',
+                password: '',
+                gender: '',
+                jobRole: '',
+                department: '',
+                address: '',
+            });
 
             if (!isLoggedIn) {
                 localStorage.setItem(storageId, JSON.stringify({ token, firstName }));
@@ -100,8 +129,12 @@ class UserForm extends React.Component {
             isRequesting, message, error, jobRoles, departments,
         } = this.state;
 
-        const jobRolesMap = jobRoles && jobRoles.map(role => <option key={Math.random()} value={role.id}>{role.name}</option>)
-        const departmentsMap = departments && departments.map(department => <option key={Math.random()} value={department.id}>{department.name}</option>)
+        const jobRolesMap = jobRoles && jobRoles.map((role) => <option key={Math.random()} value={role.name}>{role.name}</option>);
+        const departmentsMap = departments && departments.map((departmenti) => (
+            <option key={Math.random()} value={departmenti.name}>
+                {departmenti.name}
+            </option>
+        ));
 
         return (
             <>
@@ -112,35 +145,83 @@ class UserForm extends React.Component {
                     <div className="form-group">
                         <label>
                             First Name:
-                            <input type="text" name="firstName" value={firstName} onChange={this.handleChange} disabled={isRequesting} required />
+                            <input
+                                type="text"
+                                name="firstName"
+                                value={firstName}
+                                onChange={this.handleChange}
+                                disabled={isRequesting}
+                                required
+                            />
                         </label>
                     </div>
                     <div className="form-group">
                         <label>
                             Last Name:
-                            <input type="text" name="lastName" value={lastName} onChange={this.handleChange} disabled={isRequesting} required />
+                            <input
+                                type="text"
+                                name="lastName"
+                                value={lastName}
+                                onChange={this.handleChange}
+                                disabled={isRequesting}
+                                required
+                            />
                         </label>
                     </div>
                     <div className="form-group">
                         <label>
                             Email Address:
-                            <input type="email" name="email" value={email} onChange={this.handleChange} disabled={isRequesting} required />
+                            <input
+                                type="email"
+                                name="email"
+                                value={email}
+                                onChange={this.handleChange}
+                                disabled={isRequesting}
+                                required
+                            />
                         </label>
                     </div>
                     <div className="form-group">
                         <label>
                             Password:
-                            <input type="password" name="password" value={password} onChange={this.handleChange} disabled={isRequesting} required />
+                            <input
+                                type="password"
+                                name="password"
+                                value={password}
+                                onChange={this.handleChange}
+                                disabled={isRequesting}
+                                required
+                            />
                         </label>
                     </div>
                     <div className="form-group">
-                        Gender:<br />
+                        Gender:
+                        <br />
                         <label>
-                            <input type="radio" name="gender" value="male" onChange={this.handleChange} maxLength="6" disabled={isRequesting} defaultChecked /> Male
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="male"
+                                onChange={this.handleChange}
+                                maxLength="6"
+                                disabled={isRequesting}
+                                defaultChecked
+                            />
+                            {' '}
+                            Male
                         </label>
                         <br />
                         <label>
-                            <input type="radio" name="gender" value="female" onChange={this.handleChange} maxLength="6" disabled={isRequesting} /> Female
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="female"
+                                onChange={this.handleChange}
+                                maxLength="6"
+                                disabled={isRequesting}
+                            />
+                            {' '}
+                            Female
                         </label>
                         <br />
                         <br />

@@ -70,13 +70,14 @@ class Post extends React.Component {
                                 <div className="post-title">
                                     <Link to={`/post/${post.type}/${post.id}`}>{post.title}</Link>
                                     <div className="post-task-link">
-                                        {(post.type === 'article') && <Link to={`/${post.type}/edit/${post.id}`} className="edit-link">Edit</Link>}
+                                        {(post.type === 'article')
+                                            && <Link to={`/${post.type}/edit/${post.id}`} className="edit-link">Edit</Link>}
                                         <Link to={`/${post.type}/delete/${post.id}`} className="delete-link">Delete</Link>
                                     </div>
                                 </div>
 
                                 <div className="post-content">
-                                    {post.article !== undefined
+                                    {post.article
                                         ? <div className="post-content-text">{post.article}</div>
                                         : <img src={post.url} alt={`${post.title}-${Date.now()}`} className="post-content-image" />}
                                 </div>
@@ -93,13 +94,13 @@ class Post extends React.Component {
 
 Post.defaultProps = {
     showComments: true,
-    showTrimmed: false,
+    // showTrimmed: false,
     post: {},
 };
 
 Post.propTypes = {
     showComments: PropTypes.bool,
-    showTrimmed: PropTypes.bool,
+    // showTrimmed: PropTypes.bool,
     post: PropTypes.object || null,
 };
 

@@ -36,7 +36,7 @@ class ArticlePostForm extends React.Component {
             error: null,
             title: '',
             article: '',
-            postId: props.postId || 0
+            postId: props.postId || 0,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -66,7 +66,7 @@ class ArticlePostForm extends React.Component {
         if (postId === 0) {
             this.addPost(title, article);
         } else {
-            this.udpatePost(postId, title, article)
+            this.updatePost(postId, title, article);
         }
     }
 
@@ -100,7 +100,9 @@ class ArticlePostForm extends React.Component {
                 const { message } = result.data;
                 // document.querySelector('#post-form-reporter').innerHTML += showPost();
 
-                this.setState({ isSaving: false, message, error: null, title: '', article: '' });
+                this.setState({
+                    isSaving: false, message, error: null, title: '', article: '',
+                });
             }).catch((e) => this.setState({ isSaving: false, message: null, error: e.message || e.error.message }));
         }
     }
@@ -123,12 +125,14 @@ class ArticlePostForm extends React.Component {
                 }
 
                 const { title, article } = result.data;
-                this.setState({ isLoading: false, error: null, title, article });
+                this.setState({
+                    isLoading: false, error: null, title, article,
+                });
             }).catch((e) => this.setState({ isLoading: false, error: e.message || e.error.message }));
         }
     }
 
-    async udpatePost(postId, title, article) {
+    async updatePost(postId, title, article) {
         if (postId !== undefined && title !== undefined && article !== undefined) {
             this.setState({ isSaving: true, message: null, error: null });
 
@@ -154,7 +158,9 @@ class ArticlePostForm extends React.Component {
     }
 
     render() {
-        const { isSaving, message, error, title, article } = this.state;
+        const {
+            isSaving, message, error, title, article,
+        } = this.state;
 
         return (
             <>
@@ -167,13 +173,13 @@ class ArticlePostForm extends React.Component {
                             <div className="form-group">
                                 <label>
                                     Title:
-                                <input type="text" name="title" value={title} onChange={this.handleChange} required disabled={isSaving} />
+                                    <input type="text" name="title" value={title} onChange={this.handleChange} required disabled={isSaving} />
                                 </label>
                             </div>
                             <div className="form-group">
                                 <label>
                                     Content:
-                                <textarea name="article" rows="7" value={article} onChange={this.handleChange} required disabled={isSaving} />
+                                    <textarea name="article" rows="7" value={article} onChange={this.handleChange} required disabled={isSaving} />
                                 </label>
                             </div>
                             <div className="form-group">
@@ -183,7 +189,7 @@ class ArticlePostForm extends React.Component {
                             </div>
                         </form>
                     </div>
-                    <div id="post-form-reporter"></div>
+                    <div id="post-form-reporter" />
                 </div>
             </>
         );
