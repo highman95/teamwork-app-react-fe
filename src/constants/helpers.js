@@ -14,3 +14,14 @@ export const registerAuth = ({ token, firstName = '' }) => {
         return false;
     }
 };
+
+export const handleErrorResult = (error) => {
+    const isJWTExpired = error.includes('expired') && error.includes('jwt')
+
+    if (!isJWTExpired) {
+        throw new Error(error);
+    }
+
+    localStorage.removeItem(storageId)
+    window.location = '/'
+};

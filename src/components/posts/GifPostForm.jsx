@@ -1,7 +1,7 @@
 import React from 'react';
 
 import endPoints from '../../constants/endpoints';
-import { fetchToken } from '../../constants/helpers';
+import { fetchToken, handleErrorResult } from '../../constants/helpers';
 import './PostForm.css';
 import './Post.css';
 
@@ -70,7 +70,7 @@ class GifPostForm extends React.Component {
                 const result = await response.json()
 
                 if (result.status === 'error') {
-                    throw new Error(result.error);
+                    handleErrorResult(result.error);
                 }
 
                 const { message } = result.data;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import endPoints from '../../constants/endpoints';
-import { storageId } from '../../constants/helpers';
+import { storageId, handleErrorResult } from '../../constants/helpers';
 
 class SignIn extends React.Component {
     constructor(props) {
@@ -46,7 +46,7 @@ class SignIn extends React.Component {
             const result = await response.json()
 
             if (result.status === 'error') {
-                throw new Error(result.error);
+                handleErrorResult(result.error);
             }
 
             const { token, firstName } = result.data;

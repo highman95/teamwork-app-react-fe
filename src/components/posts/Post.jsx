@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import CommentsComponent from './Comments';
 import endPoints from '../../constants/endpoints';
-import { fetchToken } from '../../constants/helpers';
+import { fetchToken, handleErrorResult } from '../../constants/helpers';
 import './Post.css';
 
 class Post extends React.Component {
@@ -48,7 +48,7 @@ class Post extends React.Component {
                 const result = await response.json()
                 
                 if (result.status === 'error') {
-                    throw new Error(result.error);
+                    handleErrorResult(result.error);
                 }
 
                 this.setState({ isLoading: false, error: null, post: result.data });

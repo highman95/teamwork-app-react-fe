@@ -1,7 +1,7 @@
 import React from 'react';
 
 import endPoints from '../../constants/endpoints';
-import { fetchToken } from '../../constants/helpers';
+import { fetchToken, handleErrorResult } from '../../constants/helpers';
 
 class DeletePost extends React.Component {
     constructor(props) {
@@ -42,7 +42,7 @@ class DeletePost extends React.Component {
                 const result = await response.json()
 
                 if (result.status === 'error') {
-                    throw new Error(result.error);
+                    handleErrorResult(result.error);
                 }
 
                 this.setState({ isDeleting: false, error: null, message: result.data.message });

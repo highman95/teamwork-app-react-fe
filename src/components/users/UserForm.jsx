@@ -1,6 +1,6 @@
 import React from 'react';
 import endPoints from '../../constants/endpoints';
-import { storageId, isLoggedIn } from '../../constants/helpers';
+import { storageId, isLoggedIn, handleErrorResult } from '../../constants/helpers';
 
 export function CreateUserAccount() {
     return (
@@ -62,14 +62,14 @@ class UserForm extends React.Component {
             const result = await response.json()
 
             if (result.status === 'error') {
-                throw new Error(result.error);
+                handleErrorResult(result.error);
             }
 
             const response2 = await fetch(endPoints.departments, fetchConfig)
             const result2 = await response2.json()
 
             if (result2.status === 'error') {
-                throw new Error(result2.error);
+                handleErrorResult(result2.error);
             }
 
             const jobRoles = result.data;
@@ -115,7 +115,7 @@ class UserForm extends React.Component {
             const result = await response.json()
 
             if (result.status === 'error') {
-                throw new Error(result.error);
+                handleErrorResult(result.error);
             }
 
             const { message, token } = result.data;

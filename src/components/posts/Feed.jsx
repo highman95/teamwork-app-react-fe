@@ -1,7 +1,7 @@
 import React from 'react';
 import Post from './Post';
 import endPoints from '../../constants/endpoints';
-import { fetchToken } from '../../constants/helpers';
+import { fetchToken, handleErrorResult } from '../../constants/helpers';
 
 class Feed extends React.Component {
     constructor(props) {
@@ -34,7 +34,7 @@ class Feed extends React.Component {
             const result = await response.json()
 
             if (result.status === 'error') {
-                throw new Error(result.error);
+                handleErrorResult(result.error);
             }
 
             this.setState({ isLoading: false, error: null, feeds: result.data });
