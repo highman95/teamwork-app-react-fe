@@ -37,13 +37,18 @@ class DeletePost extends React.Component {
                 },
             };
 
-            await fetch(`${url}/${postId}`, fetchConfig).then((resp) => resp.json()).then((result) => {
+            try {
+                const response = await fetch(`${url}/${postId}`, fetchConfig)
+                const result = await response.json()
+
                 if (result.status === 'error') {
                     throw new Error(result.error);
                 }
 
                 this.setState({ isDeleting: false, error: null, message: result.data.message });
-            }).catch((e) => this.setState({ isDeleting: false, message: null, error: e.message || e.error.message }));
+            } catch (e) {
+                this.setState({ isDeleting: false, message: null, error: e.message || e.error.message })
+            }
         }
     }
 

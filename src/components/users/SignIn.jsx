@@ -25,9 +25,13 @@ class SignIn extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.setState({ error: null, isSigningIn: true });
 
         const { email, password } = this.state;
+        this.signIn(email, password)
+    }
+
+    async signIn(email, password) {
+        this.setState({ error: null, isSigningIn: true });
         const fetchData = {
             method: 'POST',
             mode: 'cors',
@@ -37,7 +41,10 @@ class SignIn extends React.Component {
             },
         };
 
-        fetch(endPoints.signIn, fetchData).then((resp) => resp.json()).then((result) => {
+        try {
+            const response = await fetch(endPoints.signIn, fetchData)
+            const result = await response.json()
+
             if (result.status === 'error') {
                 throw new Error(result.error);
             }
@@ -45,8 +52,11 @@ class SignIn extends React.Component {
             const { token, firstName } = result.data;
             localStorage.setItem(storageId, JSON.stringify({ token, firstName }));
             this.setState({ error: null, isSigningIn: false, password: '' });
+
             window.location = '/feed';
-        }).catch((e) => this.setState({ error: e.message || e.error.message, isSigningIn: false, password: '' }));
+        } catch (e) {
+            this.setState({ error: e.message || e.error.message, isSigningIn: false, password: '' })
+        }
     }
 
     render() {

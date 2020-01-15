@@ -84,7 +84,10 @@ class ArticlePostForm extends React.Component {
                 },
             };
 
-            await fetch(`${endPoints.articles}`, fetchConfig).then((resp) => resp.json()).then((result) => {
+            try {
+                const response = await fetch(`${endPoints.articles}`, fetchConfig)
+                const result = await response.json()
+
                 if (result.status === 'error') {
                     throw new Error(result.error);
                 }
@@ -103,7 +106,9 @@ class ArticlePostForm extends React.Component {
                 this.setState({
                     isSaving: false, message, error: null, title: '', article: '',
                 });
-            }).catch((e) => this.setState({ isSaving: false, message: null, error: e.message || e.error.message }));
+            } catch (e) {
+                this.setState({ isSaving: false, message: null, error: e.message || e.error.message })
+            }
         }
     }
 
@@ -119,7 +124,10 @@ class ArticlePostForm extends React.Component {
                 },
             };
 
-            await fetch(`${url}/${postId}`, fetchConfig).then((resp) => resp.json()).then((result) => {
+            try {
+                const response = await fetch(`${url}/${postId}`, fetchConfig)
+                const result = await response.json()
+
                 if (result.status === 'error') {
                     throw new Error(result.error);
                 }
@@ -128,7 +136,9 @@ class ArticlePostForm extends React.Component {
                 this.setState({
                     isLoading: false, error: null, title, article,
                 });
-            }).catch((e) => this.setState({ isLoading: false, error: e.message || e.error.message }));
+            } catch (e) {
+                this.setState({ isLoading: false, error: e.message || e.error.message })
+            }
         }
     }
 
@@ -146,14 +156,19 @@ class ArticlePostForm extends React.Component {
                 },
             };
 
-            await fetch(`${endPoints.articles}/${postId}`, fetchConfig).then((resp) => resp.json()).then((result) => {
+            try {
+                const response = await fetch(`${endPoints.articles}/${postId}`, fetchConfig)
+                const result = await response.json()
+
                 if (result.status === 'error') {
                     throw new Error(result.error);
                 }
 
                 const { message } = result.data;
                 this.setState({ isSaving: false, message, error: null });
-            }).catch((e) => this.setState({ isSaving: false, message: null, error: e.message || e.error.message }));
+            } catch (e) {
+                this.setState({ isSaving: false, message: null, error: e.message || e.error.message })
+            }
         }
     }
 

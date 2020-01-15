@@ -33,7 +33,7 @@ class GifPostForm extends React.Component {
     }
 
     handleChange(event) {
-        const {
+        let {
             name, value, type, files,
         } = event.target;
         value = (type === 'file') ? files[0] : value;
@@ -65,7 +65,10 @@ class GifPostForm extends React.Component {
                 },
             };
 
-            await fetch(`${endPoints.gifs}`, fetchConfig).then((resp) => resp.json()).then((result) => {
+            try {
+                const response = await fetch(`${endPoints.gifs}`, fetchConfig)
+                const result = await response.json()
+
                 if (result.status === 'error') {
                     throw new Error(result.error);
                 }
@@ -74,7 +77,9 @@ class GifPostForm extends React.Component {
                 this.setState({
                     isSaving: false, message, error: null, title: '', image: '',
                 });
-            }).catch((e) => this.setState({ isSaving: false, message: null, error: e.message || e.error.message }));
+            } catch (e) {
+                this.setState({ isSaving: false, message: null, error: e.message || e.error.message })
+            }
         }
     }
 

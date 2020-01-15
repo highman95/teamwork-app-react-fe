@@ -29,13 +29,18 @@ class Feed extends React.Component {
             },
         };
 
-        await fetch(endPoints.feeds, fetchConfig).then((resp) => resp.json()).then((result) => {
+        try {
+            const response = await fetch(endPoints.feeds, fetchConfig)
+            const result = await response.json()
+
             if (result.status === 'error') {
                 throw new Error(result.error);
             }
 
             this.setState({ isLoading: false, error: null, feeds: result.data });
-        }).catch((e) => this.setState({ isLoading: false, error: e.message || e.error.message }));
+        } catch (e) {
+            this.setState({ isLoading: false, error: e.message || e.error.message })
+        }
     }
 
     render() {

@@ -45,7 +45,10 @@ class CommentForm extends React.Component {
                 },
             };
 
-            await fetch(`${url}/${postId}/comment`, fetchConfig).then((resp) => resp.json()).then((result) => {
+            try {
+                const response = await fetch(`${url}/${postId}/comment`, fetchConfig)
+                const result = await response.json()
+
                 if (result.status === 'error') {
                     throw new Error(result.error);
                 }
@@ -55,7 +58,9 @@ class CommentForm extends React.Component {
                     commentId: Date.now(), comment, authorId: 0, authorName: 'You',
                 });
                 this.setState({ isSaving: false, error: null, comment: '' });
-            }).catch((e) => this.setState({ isSaving: false, error: e.message || e.error.message }));
+            } catch (e) {
+                this.setState({ isSaving: false, error: e.message || e.error.message })
+            }
         }
     }
 

@@ -57,16 +57,30 @@ class UserForm extends React.Component {
             mode: 'cors',
         };
 
-        await fetch(endPoints.roles, fetchConfig).then((resp) => resp.json()).then((result) => {
-            fetch(endPoints.departments, fetchConfig).then((resp) => resp.json()).then((result2) => {
-                const jobRoles = result.data;
-                const departments = result2.data;
+        try {
+            const response = await fetch(endPoints.roles, fetchConfig)
+            const result = await response.json()
 
-                this.setState({
-                    isRequesting: false, jobRole: jobRoles[0].name, jobRoles, department: departments[0].name, departments,
-                });
-            }).catch((e) => this.setState({ error: e.message || e.error.message, isRequesting: false }));
-        }).catch((e) => this.setState({ error: e.message || e.error.message, isRequesting: false }));
+            if (result.status === 'error') {
+                throw new Error(result.error);
+            }
+
+            const response2 = await fetch(endPoints.departments, fetchConfig)
+            const result2 = await response2.json()
+
+            if (result2.status === 'error') {
+                throw new Error(result2.error);
+            }
+
+            const jobRoles = result.data;
+            const departments = result2.data;
+
+            this.setState({
+                isRequesting: false, jobRole: jobRoles[0].name, jobRoles, department: departments[0].name, departments,
+            });
+        } catch (e) {
+            this.setState({ error: e.message || e.error.message, isRequesting: false })
+        }
     }
 
     handleChange(event) {
@@ -96,7 +110,10 @@ class UserForm extends React.Component {
             },
         };
 
-        await fetch(endPoints.signUp, fetchConfig).then((resp) => resp.json()).then((result) => {
+        try {
+            const response = await fetch(endPoints.signUp, fetchConfig)
+            const result = await response.json()
+
             if (result.status === 'error') {
                 throw new Error(result.error);
             }
@@ -120,7 +137,9 @@ class UserForm extends React.Component {
                 localStorage.setItem(storageId, JSON.stringify({ token, firstName }));
                 window.location = '/feed';
             }
-        }).catch((e) => this.setState({ isRequesting: false, error: e.message || e.error.message }));
+        } catch (e) {
+            this.setState({ isRequesting: false, error: e.message || e.error.message })
+        }
     }
 
     render() {
