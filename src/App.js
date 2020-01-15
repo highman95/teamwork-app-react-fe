@@ -1,6 +1,8 @@
 import React from 'react';
-import { Switch, Route, Link, NavLink } from 'react-router-dom';
-import { isLoggedIn } from './constants/helpers';
+import {
+    Switch, Route, Link, NavLink,
+} from 'react-router-dom';
+import { storageId, isLoggedIn } from './constants/helpers';
 import AuthenticatedRoute from './components/AuthenticatedRoute';
 import './App.css';
 
@@ -10,10 +12,17 @@ import PostComponent from './components/posts/Post';
 import { CreateArticlePost, EditArticlePost } from './components/posts/ArticlePostForm';
 import { CreateGifPost } from './components/posts/GifPostForm';
 import DeletePostComponent from './components/posts/DeletePost';
-import { CreateUserAccount } from './components/users/UserForm'
+import { CreateUserAccount } from './components/users/UserForm';
 import NotFoundComponent from './components/NotFound';
 
 class App extends React.Component {
+    static logOut(event) {
+        // event.preventDefault();
+        localStorage.removeItem(storageId);
+        window.location = '/'
+        // return <Redirect to="/" />;
+    }
+
     constructor(props) {
         super(props);
         this.state = {};
@@ -36,7 +45,7 @@ class App extends React.Component {
                                     <li><NavLink to="/article/create">Add Article</NavLink></li>
                                     <li><NavLink to="/gif/create">Add Gif</NavLink></li>
                                     <li><NavLink to="/user/create">Add User</NavLink></li>
-                                    <li><NavLink to="/logout">Logout</NavLink></li>
+                                    <li><NavLink to="#" onClick={App.logOut}>Logout</NavLink></li>
                                 </>
                             )}
                         </ul>
