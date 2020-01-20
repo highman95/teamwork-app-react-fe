@@ -14,3 +14,29 @@ export const registerAuth = ({ token, firstName = '' }) => {
         return false;
     }
 };
+
+export const handleErrorResult = (error) => {
+    const isJWTExpired = error.includes('expired') && error.includes('jwt')
+
+    if (!isJWTExpired) {
+        throw new Error(error);
+    }
+
+    signOut();
+};
+
+export const fetchBot = async (endPoints, options) => {
+    const response = await fetch(endPoints, options)
+    const result = await response.json()
+
+    if (result.status === 'error') {
+        handleErrorResult(result.error);
+    }
+
+    return result
+};
+
+export const signOut = () => {
+    localStorage.removeItem(storageId);
+    window.location = '/';
+}

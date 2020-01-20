@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import endPoints from '../../constants/endpoints';
-import { fetchToken } from '../../constants/helpers';
+import { fetchToken, fetchBot } from '../../constants/helpers';
 
 class CommentForm extends React.Component {
     constructor(props) {
@@ -34,7 +35,7 @@ class CommentForm extends React.Component {
         if (postId !== undefined && postType !== undefined) {
             this.setState({ error: null, isSaving: true });
 
-            const url = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
+            const endPointX = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
             const fetchConfig = {
                 method: 'POST',
                 mode: 'cors',
@@ -45,17 +46,17 @@ class CommentForm extends React.Component {
                 },
             };
 
-            await fetch(`${url}/${postId}/comment`, fetchConfig).then((resp) => resp.json()).then((result) => {
-                if (result.status === 'error') {
-                    throw new Error(result.error);
-                }
+            try {
+                await fetchBot(`${endPointX}/${postId}/comment`, fetchConfig)
 
                 const { onCommentSave } = this.props;
                 onCommentSave({
                     commentId: Date.now(), comment, authorId: 0, authorName: 'You',
                 });
                 this.setState({ isSaving: false, error: null, comment: '' });
-            }).catch((e) => this.setState({ isSaving: false, error: e.message || e.error.message }));
+            } catch (e) {
+                this.setState({ isSaving: false, error: e.message || e.error.message })
+            }
         }
     }
 
@@ -71,6 +72,8 @@ class CommentForm extends React.Component {
                     <button type="submit" onClick={this.handleSave} disabled={isSaving}>
                         {isSaving ? 'Saving...' : 'Save'}
                     </button>
+                    {' '}
+                    <small><Link to='/feed'>Feed &rarr;</Link></small>
                 </form>
             </div>
         );

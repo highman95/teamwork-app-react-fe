@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import endPoints from '../../constants/endpoints';
-import { fetchToken } from '../../constants/helpers';
+import { fetchToken, fetchBot } from '../../constants/helpers';
 import './PostForm.css';
 import './Post.css';
 
@@ -36,7 +37,7 @@ class ArticlePostForm extends React.Component {
             error: null,
             title: '',
             article: '',
-            postId: props.postId || 0
+            postId: props.postId || 0,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -66,7 +67,7 @@ class ArticlePostForm extends React.Component {
         if (postId === 0) {
             this.addPost(title, article);
         } else {
-            this.udpatePost(postId, title, article)
+            this.updatePost(postId, title, article);
         }
     }
 
@@ -84,10 +85,8 @@ class ArticlePostForm extends React.Component {
                 },
             };
 
-            await fetch(`${endPoints.articles}`, fetchConfig).then((resp) => resp.json()).then((result) => {
-                if (result.status === 'error') {
-                    throw new Error(result.error);
-                }
+            try {
+                const result = await fetchBot(`${endPoints.articles}`, fetchConfig)
 
                 // const showPost = () => {
                 //     return (
@@ -100,8 +99,12 @@ class ArticlePostForm extends React.Component {
                 const { message } = result.data;
                 // document.querySelector('#post-form-reporter').innerHTML += showPost();
 
-                this.setState({ isSaving: false, message, error: null, title: '', article: '' });
-            }).catch((e) => this.setState({ isSaving: false, message: null, error: e.message || e.error.message }));
+                this.setState({
+                    isSaving: false, message, error: null, title: '', article: '',
+                });
+            } catch (e) {
+                this.setState({ isSaving: false, message: null, error: e.message || e.error.message })
+            }
         }
     }
 
@@ -109,7 +112,7 @@ class ArticlePostForm extends React.Component {
         if (postId !== undefined && postId !== 0 && postType !== undefined) {
             this.setState({ error: null, isLoading: true });
 
-            const url = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
+            const endPointX = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
             const fetchConfig = {
                 headers: {
                     'Content-Type': 'application/json',
@@ -117,18 +120,20 @@ class ArticlePostForm extends React.Component {
                 },
             };
 
-            await fetch(`${url}/${postId}`, fetchConfig).then((resp) => resp.json()).then((result) => {
-                if (result.status === 'error') {
-                    throw new Error(result.error);
-                }
-
+            try {
+                const result = await fetchBot(`${endPointX}/${postId}`, fetchConfig)
                 const { title, article } = result.data;
-                this.setState({ isLoading: false, error: null, title, article });
-            }).catch((e) => this.setState({ isLoading: false, error: e.message || e.error.message }));
+
+                this.setState({
+                    isLoading: false, error: null, title, article,
+                });
+            } catch (e) {
+                this.setState({ isLoading: false, error: e.message || e.error.message })
+            }
         }
     }
 
-    async udpatePost(postId, title, article) {
+    async updatePost(postId, title, article) {
         if (postId !== undefined && title !== undefined && article !== undefined) {
             this.setState({ isSaving: true, message: null, error: null });
 
@@ -142,19 +147,21 @@ class ArticlePostForm extends React.Component {
                 },
             };
 
-            await fetch(`${endPoints.articles}/${postId}`, fetchConfig).then((resp) => resp.json()).then((result) => {
-                if (result.status === 'error') {
-                    throw new Error(result.error);
-                }
-
+            try {
+                const result = await fetchBot(`${endPoints.articles}/${postId}`, fetchConfig)
                 const { message } = result.data;
+
                 this.setState({ isSaving: false, message, error: null });
-            }).catch((e) => this.setState({ isSaving: false, message: null, error: e.message || e.error.message }));
+            } catch (e) {
+                this.setState({ isSaving: false, message: null, error: e.message || e.error.message })
+            }
         }
     }
 
     render() {
-        const { isSaving, message, error, title, article } = this.state;
+        const {
+            isSaving, message, error, title, article,
+        } = this.state;
 
         return (
             <>
@@ -167,23 +174,25 @@ class ArticlePostForm extends React.Component {
                             <div className="form-group">
                                 <label>
                                     Title:
-                                <input type="text" name="title" value={title} onChange={this.handleChange} required disabled={isSaving} />
+                                    <input type="text" name="title" value={title} onChange={this.handleChange} required disabled={isSaving} />
                                 </label>
                             </div>
                             <div className="form-group">
                                 <label>
                                     Content:
-                                <textarea name="article" rows="7" value={article} onChange={this.handleChange} required disabled={isSaving} />
+                                    <textarea name="article" rows="7" value={article} onChange={this.handleChange} required disabled={isSaving} />
                                 </label>
                             </div>
                             <div className="form-group">
                                 <button type="submit" onClick={this.handleSave} disabled={isSaving}>
                                     {isSaving ? 'Saving...' : 'Save'}
                                 </button>
+                                {' '}
+                                <small><Link to='/feed'>Feed &rarr;</Link></small>
                             </div>
                         </form>
                     </div>
-                    <div id="post-form-reporter"></div>
+                    <div id="post-form-reporter" />
                 </div>
             </>
         );

@@ -1,6 +1,6 @@
 import React from 'react';
 import endPoints from '../../constants/endpoints';
-import { storageId, isLoggedIn } from '../../constants/helpers';
+import { storageId, isLoggedIn, fetchBot } from '../../constants/helpers';
 
 export function CreateUserAccount() {
     return (
@@ -12,11 +12,23 @@ export function CreateUserAccount() {
     );
 }
 
+export function EditUserAccount() {
+    return (
+        <>
+            <h3>Edit User Account</h3>
+            <hr />
+            <UserForm />
+        </>
+    );
+}
+
+
 class UserForm extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            isSaving: false,
             isRequesting: false,
             message: null,
             error: null,
@@ -27,17 +39,17 @@ class UserForm extends React.Component {
             email: '',
             password: '',
             gender: 'male',
-            jobRole: null,
-            department: null,
+            jobRole: '',
+            department: '',
             address: '',
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.populateFields();
     }
 
     componentDidMount() {
-        this.populateFields();
     }
 
     async populateFields() {
@@ -46,14 +58,19 @@ class UserForm extends React.Component {
             mode: 'cors',
         };
 
-        await fetch(endPoints.roles, fetchConfig).then(resp => resp.json()).then(result => {
-            fetch(endPoints.departments, fetchConfig).then(resp => resp.json()).then(result_2 => {
-                const jobRoles = result.data;
-                const departments = result_2.data;
+        try {
+            const result = await fetchBot(endPoints.roles, fetchConfig)
+            const result2 = await fetchBot(endPoints.departments, fetchConfig)
 
-                this.setState({ isRequesting: false, jobRole: jobRoles[0].name, jobRoles, department: departments[0].name, departments });
-            }).catch((e) => this.setState({ error: e.message || e.error.message, isRequesting: false }));
-        }).catch((e) => this.setState({ error: e.message || e.error.message, isRequesting: false }));
+            const jobRoles = result.data;
+            const departments = result2.data;
+
+            this.setState({
+                isRequesting: false, jobRole: jobRoles[0].name, jobRoles, department: departments[0].name, departments,
+            });
+        } catch (e) {
+            this.setState({ error: e.message || e.error.message, isRequesting: false })
+        }
     }
 
     handleChange(event) {
@@ -64,44 +81,64 @@ class UserForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        const { firstName, lastName, email, password, gender, jobRole, department, address } = this.state;
+        const {
+            firstName, lastName, email, password, gender, jobRole, department, address,
+        } = this.state;
         this.addUser(firstName, lastName, email, password, gender, jobRole, department, address);
     }
 
     async addUser(firstName, lastName, email, password, gender, jobRole, department, address) {
-        this.setState({ isRequesting: true, message: null });
+        this.setState({ isSaving: true, message: null });
         const fetchConfig = {
             method: 'POST',
             mode: 'cors',
-            body: JSON.stringify({ firstName, lastName, email, password, gender, jobRole, department, address }),
+            body: JSON.stringify({
+                firstName, lastName, email, password, gender, jobRole, department, address,
+            }),
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
         };
 
-        await fetch(endPoints.signUp, fetchConfig).then(resp => resp.json()).then(result => {
-            if (result.status === 'error') {
-                throw new Error(result.error);
-            }
+        try {
+            const result = await fetchBot(endPoints.signUp, fetchConfig)
 
-            const { message, token, firstName } = result.data;
-            this.setState({ isRequesting: false, message, error: null, firstName: '', lastName: '', email: '', password: '', gender: '', jobRole: '', department: '', address: '' });
+            const { message, token } = result.data;
+            this.setState({
+                isSaving: false,
+                message,
+                error: null,
+                firstName: '',
+                lastName: '',
+                email: '',
+                password: '',
+                gender: '',
+                jobRole: '',
+                department: '',
+                address: '',
+            });
 
             if (!isLoggedIn) {
                 localStorage.setItem(storageId, JSON.stringify({ token, firstName }));
                 window.location = '/feed';
             }
-        }).catch((e) => this.setState({ isRequesting: false, error: e.message || e.error.message }));
+        } catch (e) {
+            this.setState({ isSaving: false, error: e.message || e.error.message })
+        }
     }
 
     render() {
         const {
             firstName, lastName, email, password, jobRole, department, address,
-            isRequesting, message, error, jobRoles, departments,
+            isRequesting, isSaving, message, error, jobRoles, departments,
         } = this.state;
 
-        const jobRolesMap = jobRoles && jobRoles.map(role => <option key={Math.random()} value={role.id}>{role.name}</option>)
-        const departmentsMap = departments && departments.map(department => <option key={Math.random()} value={department.id}>{department.name}</option>)
+        const jobRolesMap = jobRoles && jobRoles.map((role) => <option key={Math.random()} value={role.name}>{role.name}</option>);
+        const departmentsMap = departments && departments.map((departmenti) => (
+            <option key={Math.random()} value={departmenti.name}>
+                {departmenti.name}
+            </option>
+        ));
 
         return (
             <>
@@ -112,35 +149,83 @@ class UserForm extends React.Component {
                     <div className="form-group">
                         <label>
                             First Name:
-                            <input type="text" name="firstName" value={firstName} onChange={this.handleChange} disabled={isRequesting} required />
+                            <input
+                                type="text"
+                                name="firstName"
+                                value={firstName}
+                                onChange={this.handleChange}
+                                disabled={isRequesting}
+                                required
+                            />
                         </label>
                     </div>
                     <div className="form-group">
                         <label>
                             Last Name:
-                            <input type="text" name="lastName" value={lastName} onChange={this.handleChange} disabled={isRequesting} required />
+                            <input
+                                type="text"
+                                name="lastName"
+                                value={lastName}
+                                onChange={this.handleChange}
+                                disabled={isRequesting}
+                                required
+                            />
                         </label>
                     </div>
                     <div className="form-group">
                         <label>
                             Email Address:
-                            <input type="email" name="email" value={email} onChange={this.handleChange} disabled={isRequesting} required />
+                            <input
+                                type="email"
+                                name="email"
+                                value={email}
+                                onChange={this.handleChange}
+                                disabled={isRequesting}
+                                required
+                            />
                         </label>
                     </div>
                     <div className="form-group">
                         <label>
                             Password:
-                            <input type="password" name="password" value={password} onChange={this.handleChange} disabled={isRequesting} required />
+                            <input
+                                type="password"
+                                name="password"
+                                value={password}
+                                onChange={this.handleChange}
+                                disabled={isRequesting}
+                                required
+                            />
                         </label>
                     </div>
                     <div className="form-group">
-                        Gender:<br />
+                        Gender:
+                        <br />
                         <label>
-                            <input type="radio" name="gender" value="male" onChange={this.handleChange} maxLength="6" disabled={isRequesting} defaultChecked /> Male
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="male"
+                                onChange={this.handleChange}
+                                maxLength="6"
+                                disabled={isRequesting}
+                                defaultChecked
+                            />
+                            {' '}
+                            Male
                         </label>
                         <br />
                         <label>
-                            <input type="radio" name="gender" value="female" onChange={this.handleChange} maxLength="6" disabled={isRequesting} /> Female
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="female"
+                                onChange={this.handleChange}
+                                maxLength="6"
+                                disabled={isRequesting}
+                            />
+                            {' '}
+                            Female
                         </label>
                         <br />
                         <br />
@@ -170,7 +255,7 @@ class UserForm extends React.Component {
 
                     <div className="form-group">
                         <button type="submit" onClick={this.handleSubmit} disabled={isRequesting}>
-                            {isRequesting ? 'Saving...' : 'Save'}
+                            {isSaving ? 'Saving...' : 'Save'}
                         </button>
                     </div>
                 </form>

@@ -1,4 +1,6 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { isLoggedIn } from '../constants/helpers';
 import SignInComponent from './users/SignIn';
 import './Home.css';
 
@@ -9,6 +11,10 @@ class Home extends React.Component {
     }
 
     render() {
+        if (isLoggedIn) {
+            return <Redirect to="/feed" />;
+        }
+
         return (
             <>
                 <div className="home-intro">

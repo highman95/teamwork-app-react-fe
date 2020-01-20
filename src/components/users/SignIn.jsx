@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import endPoints from '../../constants/endpoints';
+import { storageId, fetchBot } from '../../constants/helpers';
 
 class SignIn extends React.Component {
     constructor(props) {
@@ -13,7 +15,7 @@ class SignIn extends React.Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleSignIn = this.handleSignIn.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(event) {
@@ -21,12 +23,15 @@ class SignIn extends React.Component {
         this.setState({ [name]: value });
     }
 
-    handleSignIn(event) {
+    handleSubmit(event) {
         event.preventDefault();
-        this.setState({ error: null, isSigningIn: true });
 
-        const { history } = this.props;
         const { email, password } = this.state;
+        this.signIn(email, password)
+    }
+
+    async signIn(email, password) {
+        this.setState({ error: null, isSigningIn: true });
         const fetchData = {
             method: 'POST',
             mode: 'cors',
@@ -36,17 +41,16 @@ class SignIn extends React.Component {
             },
         };
 
-        fetch(endPoints.signIn, fetchData).then((resp) => resp.json()).then((result) => {
-            if (result.status === 'error') {
-                throw new Error(result.error);
-            }
-
-            const { token, firstName } = result.data;
-            localStorage.setItem('qoqxTMwk', JSON.stringify({ token, firstName }));
+        try {
+            const result = await fetchBot(endPoints.signIn, fetchData)
             this.setState({ error: null, isSigningIn: false, password: '' });
 
-            history.push('/feed');
-        }).catch((e) => this.setState({ error: e.message || e.error.message, isSigningIn: false, password: '' }));
+            const { token, firstName } = result.data;
+            localStorage.setItem(storageId, JSON.stringify({ token, firstName }));
+            window.location = '/feed';
+        } catch (e) {
+            this.setState({ error: e.message || e.error.message, isSigningIn: false, password: '' })
+        }
     }
 
     render() {
@@ -74,9 +78,11 @@ class SignIn extends React.Component {
                     </div>
 
                     <div className="form-group">
-                        <button type="submit" onClick={this.handleSignIn} disabled={isSigningIn}>
+                        <button type="submit" onClick={this.handleSubmit} disabled={isSigningIn}>
                             {isSigningIn ? 'Signing in...' : 'Sign in'}
                         </button>
+                        {' '}
+                        <Link to="/user/create">Sign UP!</Link>
                     </div>
                 </form>
             </>

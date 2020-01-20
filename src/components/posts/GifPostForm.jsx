@@ -1,7 +1,7 @@
 import React from 'react';
 
 import endPoints from '../../constants/endpoints';
-import { fetchToken } from '../../constants/helpers';
+import { fetchToken, fetchBot } from '../../constants/helpers';
 import './PostForm.css';
 import './Post.css';
 
@@ -33,7 +33,9 @@ class GifPostForm extends React.Component {
     }
 
     handleChange(event) {
-        let { name, value, type, files } = event.target;
+        let {
+            name, value, type, files,
+        } = event.target;
         value = (type === 'file') ? files[0] : value;
 
         this.setState({ [name]: value });
@@ -63,19 +65,23 @@ class GifPostForm extends React.Component {
                 },
             };
 
-            await fetch(`${endPoints.gifs}`, fetchConfig).then((resp) => resp.json()).then((result) => {
-                if (result.status === 'error') {
-                    throw new Error(result.error);
-                }
-
+            try {
+                const result = await fetchBot(endPoints.gifs, fetchConfig)
                 const { message } = result.data;
-                this.setState({ isSaving: false, message, error: null, title: '', image: '' });
-            }).catch((e) => this.setState({ isSaving: false, message: null, error: e.message || e.error.message }));
+
+                this.setState({
+                    isSaving: false, message, error: null, title: '', image: '',
+                });
+            } catch (e) {
+                this.setState({ isSaving: false, message: null, error: e.message || e.error.message })
+            }
         }
     }
 
     render() {
-        const { isSaving, message, error, title } = this.state;
+        const {
+            isSaving, message, error, title,
+        } = this.state;
 
         return (
             <>
@@ -88,7 +94,14 @@ class GifPostForm extends React.Component {
                             <div className="form-group">
                                 <label>
                                     Title:
-                                    <input type="text" name="title" value={title} onChange={this.handleChange} required disabled={isSaving} />
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        value={title}
+                                        onChange={this.handleChange}
+                                        required
+                                        disabled={isSaving}
+                                    />
                                 </label>
                             </div>
                             <div className="form-group">
@@ -104,7 +117,7 @@ class GifPostForm extends React.Component {
                             </div>
                         </form>
                     </div>
-                    <div id="post-form-reporter"></div>
+                    <div id="post-form-reporter" />
                 </div>
             </>
         );
