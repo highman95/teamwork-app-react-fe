@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/static/css/main.550e3131.chunk.css",
-    "main.js": "/static/js/main.90c3fa9f.chunk.js",
-    "main.js.map": "/static/js/main.90c3fa9f.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.36c90234.js",
-    "runtime-main.js.map": "/static/js/runtime-main.36c90234.js.map",
-    "static/js/2.7550b6cf.chunk.js": "/static/js/2.7550b6cf.chunk.js",
-    "static/js/2.7550b6cf.chunk.js.map": "/static/js/2.7550b6cf.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.a0125c7cb3594188d48c365a9f9f01dc.js": "/precache-manifest.a0125c7cb3594188d48c365a9f9f01dc.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/main.550e3131.chunk.css.map": "/static/css/main.550e3131.chunk.css.map"
+    "main.css": "/teamwork-app-react-fe/static/css/main.550e3131.chunk.css",
+    "main.js": "/teamwork-app-react-fe/static/js/main.132d581c.chunk.js",
+    "main.js.map": "/teamwork-app-react-fe/static/js/main.132d581c.chunk.js.map",
+    "runtime-main.js": "/teamwork-app-react-fe/static/js/runtime-main.24c3fdae.js",
+    "runtime-main.js.map": "/teamwork-app-react-fe/static/js/runtime-main.24c3fdae.js.map",
+    "static/js/2.7550b6cf.chunk.js": "/teamwork-app-react-fe/static/js/2.7550b6cf.chunk.js",
+    "static/js/2.7550b6cf.chunk.js.map": "/teamwork-app-react-fe/static/js/2.7550b6cf.chunk.js.map",
+    "index.html": "/teamwork-app-react-fe/index.html",
+    "precache-manifest.9d52383afb9e4f0b86e5077f374d7b31.js": "/teamwork-app-react-fe/precache-manifest.9d52383afb9e4f0b86e5077f374d7b31.js",
+    "service-worker.js": "/teamwork-app-react-fe/service-worker.js",
+    "static/css/main.550e3131.chunk.css.map": "/teamwork-app-react-fe/static/css/main.550e3131.chunk.css.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.36c90234.js",
+    "static/js/runtime-main.24c3fdae.js",
     "static/js/2.7550b6cf.chunk.js",
     "static/css/main.550e3131.chunk.css",
-    "static/js/main.90c3fa9f.chunk.js"
+    "static/js/main.132d581c.chunk.js"
   ]
 }
