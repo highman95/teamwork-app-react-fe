@@ -22,8 +22,7 @@ export const handleErrorResult = (error) => {
         throw new Error(error);
     }
 
-    localStorage.removeItem(storageId)
-    window.location = '/'
+    signOut();
 };
 
 export const fetchBot = async (endPoints, options) => {
@@ -36,3 +35,8 @@ export const fetchBot = async (endPoints, options) => {
 
     return result
 };
+
+export const signOut = () => {
+    localStorage.removeItem(storageId);
+    window.location = '/';
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import {
     Switch, Route, Link, NavLink,
 } from 'react-router-dom';
-import { storageId, isLoggedIn } from './constants/helpers';
+import { isLoggedIn, signOut } from './constants/helpers';
 import AuthenticatedRoute from './components/AuthenticatedRoute';
 import './App.css';
 
@@ -17,9 +17,8 @@ import NotFoundComponent from './components/NotFound';
 
 class App extends React.Component {
     static logOut(event) {
-        // event.preventDefault();
-        localStorage.removeItem(storageId);
-        window.location = '/'
+        event.preventDefault();
+        signOut()
         // return <Redirect to="/" />;
     }
 
