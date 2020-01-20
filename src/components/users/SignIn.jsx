@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import endPoints from '../../constants/endpoints';
-import { storageId, handleErrorResult } from '../../constants/helpers';
+import { storageId, fetchBot } from '../../constants/helpers';
 
 class SignIn extends React.Component {
     constructor(props) {
@@ -42,17 +42,11 @@ class SignIn extends React.Component {
         };
 
         try {
-            const response = await fetch(endPoints.signIn, fetchData)
-            const result = await response.json()
-
-            if (result.status === 'error') {
-                handleErrorResult(result.error);
-            }
+            const result = await fetchBot(endPoints.signIn, fetchData)
+            this.setState({ error: null, isSigningIn: false, password: '' });
 
             const { token, firstName } = result.data;
             localStorage.setItem(storageId, JSON.stringify({ token, firstName }));
-            this.setState({ error: null, isSigningIn: false, password: '' });
-
             window.location = '/feed';
         } catch (e) {
             this.setState({ error: e.message || e.error.message, isSigningIn: false, password: '' })

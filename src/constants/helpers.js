@@ -25,3 +25,14 @@ export const handleErrorResult = (error) => {
     localStorage.removeItem(storageId)
     window.location = '/'
 };
+
+export const fetchBot = async (endPoints, options) => {
+    const response = await fetch(endPoints, options)
+    const result = await response.json()
+
+    if (result.status === 'error') {
+        handleErrorResult(result.error);
+    }
+
+    return result
+};

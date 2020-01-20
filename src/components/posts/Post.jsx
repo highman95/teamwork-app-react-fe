@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import CommentsComponent from './Comments';
 import endPoints from '../../constants/endpoints';
-import { fetchToken, handleErrorResult } from '../../constants/helpers';
+import { fetchToken, fetchBot } from '../../constants/helpers';
 import './Post.css';
 
 class Post extends React.Component {
@@ -35,7 +35,7 @@ class Post extends React.Component {
         if (postId !== undefined && postType !== undefined) {
             this.setState({ error: null, isLoading: true });
 
-            const url = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
+            const endPointX = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
             const fetchConfig = {
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,13 +44,7 @@ class Post extends React.Component {
             };
 
             try {
-                const response = await fetch(`${url}/${postId}`, fetchConfig)
-                const result = await response.json()
-                
-                if (result.status === 'error') {
-                    handleErrorResult(result.error);
-                }
-
+                const result = await fetchBot(`${endPointX}/${postId}`, fetchConfig)
                 this.setState({ isLoading: false, error: null, post: result.data });
             } catch (e) {
                 this.setState({ isLoading: false, error: e.message || e.error.message })
@@ -60,8 +54,9 @@ class Post extends React.Component {
 
     render() {
         const { showComments } = this.props;
-        const { isLoading, error, post } = this.state;
+        const { isLoading, error, post = {} } = this.state;
         const { comments } = post;
+        const postType = post.article ? 'article' : 'gif';
 
         return (
             <>
@@ -73,21 +68,21 @@ class Post extends React.Component {
                         ? (
                             <div className="">
                                 <div className="post-title">
-                                    <Link to={`/post/${post.type}/${post.id}`}>{post.title}</Link>
+                                    <Link to={`/post/${postType}/${post.id}`}>{post.title}</Link>
                                     <div className="post-task-link">
-                                        {(post.type === 'article')
-                                            && <Link to={`/${post.type}/edit/${post.id}`} className="edit-link">Edit</Link>}
-                                        <Link to={`/${post.type}/delete/${post.id}`} className="delete-link">Delete</Link>
+                                        {!!post.article
+                                            && <Link to={`/${postType}/edit/${post.id}`} className="edit-link">Edit</Link>}
+                                        <Link to={`/${postType}/delete/${post.id}`} className="delete-link">Delete</Link>
                                     </div>
                                 </div>
 
                                 <div className="post-content">
-                                    {post.article
+                                    {!!post.article
                                         ? <div className="post-content-text">{post.article}</div>
                                         : <img src={post.url} alt={`${post.title}-${Date.now()}`} className="post-content-image" />}
                                 </div>
 
-                                {showComments && <CommentsComponent comments={comments} postId={post.id} postType={post.type} />}
+                                {showComments && <CommentsComponent comments={comments} postId={post.id} postType={postType} />}
                             </div>
                         )
                         : <h4>Post does not exist...</h4>)}

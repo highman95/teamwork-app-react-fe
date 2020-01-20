@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import endPoints from '../../constants/endpoints';
-import { fetchToken, handleErrorResult } from '../../constants/helpers';
+import { fetchToken, fetchBot } from '../../constants/helpers';
 import './PostForm.css';
 import './Post.css';
 
@@ -85,12 +86,7 @@ class ArticlePostForm extends React.Component {
             };
 
             try {
-                const response = await fetch(`${endPoints.articles}`, fetchConfig)
-                const result = await response.json()
-
-                if (result.status === 'error') {
-                    handleErrorResult(result.error);
-                }
+                const result = await fetchBot(`${endPoints.articles}`, fetchConfig)
 
                 // const showPost = () => {
                 //     return (
@@ -116,7 +112,7 @@ class ArticlePostForm extends React.Component {
         if (postId !== undefined && postId !== 0 && postType !== undefined) {
             this.setState({ error: null, isLoading: true });
 
-            const url = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
+            const endPointX = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
             const fetchConfig = {
                 headers: {
                     'Content-Type': 'application/json',
@@ -125,14 +121,9 @@ class ArticlePostForm extends React.Component {
             };
 
             try {
-                const response = await fetch(`${url}/${postId}`, fetchConfig)
-                const result = await response.json()
-
-                if (result.status === 'error') {
-                    handleErrorResult(result.error);
-                }
-
+                const result = await fetchBot(`${endPointX}/${postId}`, fetchConfig)
                 const { title, article } = result.data;
+
                 this.setState({
                     isLoading: false, error: null, title, article,
                 });
@@ -157,14 +148,9 @@ class ArticlePostForm extends React.Component {
             };
 
             try {
-                const response = await fetch(`${endPoints.articles}/${postId}`, fetchConfig)
-                const result = await response.json()
-
-                if (result.status === 'error') {
-                    handleErrorResult(result.error);
-                }
-
+                const result = await fetchBot(`${endPoints.articles}/${postId}`, fetchConfig)
                 const { message } = result.data;
+
                 this.setState({ isSaving: false, message, error: null });
             } catch (e) {
                 this.setState({ isSaving: false, message: null, error: e.message || e.error.message })
@@ -201,6 +187,8 @@ class ArticlePostForm extends React.Component {
                                 <button type="submit" onClick={this.handleSave} disabled={isSaving}>
                                     {isSaving ? 'Saving...' : 'Save'}
                                 </button>
+                                {' '}
+                                <small><Link to='/feed'>Feed &rarr;</Link></small>
                             </div>
                         </form>
                     </div>

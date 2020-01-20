@@ -1,7 +1,7 @@
 import React from 'react';
 import Post from './Post';
 import endPoints from '../../constants/endpoints';
-import { fetchToken, handleErrorResult } from '../../constants/helpers';
+import { fetchToken, fetchBot } from '../../constants/helpers';
 
 class Feed extends React.Component {
     constructor(props) {
@@ -30,13 +30,7 @@ class Feed extends React.Component {
         };
 
         try {
-            const response = await fetch(endPoints.feeds, fetchConfig)
-            const result = await response.json()
-
-            if (result.status === 'error') {
-                handleErrorResult(result.error);
-            }
-
+            const result = await fetchBot(endPoints.feeds, fetchConfig)
             this.setState({ isLoading: false, error: null, feeds: result.data });
         } catch (e) {
             this.setState({ isLoading: false, error: e.message || e.error.message })

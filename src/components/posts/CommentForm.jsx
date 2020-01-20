@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import endPoints from '../../constants/endpoints';
-import { fetchToken, handleErrorResult } from '../../constants/helpers';
+import { fetchToken, fetchBot } from '../../constants/helpers';
 
 class CommentForm extends React.Component {
     constructor(props) {
@@ -34,7 +35,7 @@ class CommentForm extends React.Component {
         if (postId !== undefined && postType !== undefined) {
             this.setState({ error: null, isSaving: true });
 
-            const url = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
+            const endPointX = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
             const fetchConfig = {
                 method: 'POST',
                 mode: 'cors',
@@ -46,12 +47,7 @@ class CommentForm extends React.Component {
             };
 
             try {
-                const response = await fetch(`${url}/${postId}/comment`, fetchConfig)
-                const result = await response.json()
-
-                if (result.status === 'error') {
-                    handleErrorResult(result.error);
-                }
+                await fetchBot(`${endPointX}/${postId}/comment`, fetchConfig)
 
                 const { onCommentSave } = this.props;
                 onCommentSave({
@@ -76,6 +72,8 @@ class CommentForm extends React.Component {
                     <button type="submit" onClick={this.handleSave} disabled={isSaving}>
                         {isSaving ? 'Saving...' : 'Save'}
                     </button>
+                    {' '}
+                    <small><Link to='/feed'>Feed &rarr;</Link></small>
                 </form>
             </div>
         );

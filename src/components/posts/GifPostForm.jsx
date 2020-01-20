@@ -1,7 +1,7 @@
 import React from 'react';
 
 import endPoints from '../../constants/endpoints';
-import { fetchToken, handleErrorResult } from '../../constants/helpers';
+import { fetchToken, fetchBot } from '../../constants/helpers';
 import './PostForm.css';
 import './Post.css';
 
@@ -66,14 +66,9 @@ class GifPostForm extends React.Component {
             };
 
             try {
-                const response = await fetch(`${endPoints.gifs}`, fetchConfig)
-                const result = await response.json()
-
-                if (result.status === 'error') {
-                    handleErrorResult(result.error);
-                }
-
+                const result = await fetchBot(endPoints.gifs, fetchConfig)
                 const { message } = result.data;
+
                 this.setState({
                     isSaving: false, message, error: null, title: '', image: '',
                 });

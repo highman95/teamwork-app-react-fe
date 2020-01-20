@@ -1,6 +1,6 @@
 import React from 'react';
 import endPoints from '../../constants/endpoints';
-import { storageId, isLoggedIn, handleErrorResult } from '../../constants/helpers';
+import { storageId, isLoggedIn, fetchBot } from '../../constants/helpers';
 
 export function CreateUserAccount() {
     return (
@@ -12,7 +12,7 @@ export function CreateUserAccount() {
     );
 }
 
-export function EdiUserAccount() {
+export function EditUserAccount() {
     return (
         <>
             <h3>Edit User Account</h3>
@@ -28,6 +28,7 @@ class UserForm extends React.Component {
         super(props);
 
         this.state = {
+            isSaving: false,
             isRequesting: false,
             message: null,
             error: null,
@@ -45,10 +46,10 @@ class UserForm extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.populateFields();
     }
 
     componentDidMount() {
-        this.populateFields();
     }
 
     async populateFields() {
@@ -58,19 +59,8 @@ class UserForm extends React.Component {
         };
 
         try {
-            const response = await fetch(endPoints.roles, fetchConfig)
-            const result = await response.json()
-
-            if (result.status === 'error') {
-                handleErrorResult(result.error);
-            }
-
-            const response2 = await fetch(endPoints.departments, fetchConfig)
-            const result2 = await response2.json()
-
-            if (result2.status === 'error') {
-                handleErrorResult(result2.error);
-            }
+            const result = await fetchBot(endPoints.roles, fetchConfig)
+            const result2 = await fetchBot(endPoints.departments, fetchConfig)
 
             const jobRoles = result.data;
             const departments = result2.data;
@@ -98,7 +88,7 @@ class UserForm extends React.Component {
     }
 
     async addUser(firstName, lastName, email, password, gender, jobRole, department, address) {
-        this.setState({ isRequesting: true, message: null });
+        this.setState({ isSaving: true, message: null });
         const fetchConfig = {
             method: 'POST',
             mode: 'cors',
@@ -111,16 +101,11 @@ class UserForm extends React.Component {
         };
 
         try {
-            const response = await fetch(endPoints.signUp, fetchConfig)
-            const result = await response.json()
-
-            if (result.status === 'error') {
-                handleErrorResult(result.error);
-            }
+            const result = await fetchBot(endPoints.signUp, fetchConfig)
 
             const { message, token } = result.data;
             this.setState({
-                isRequesting: false,
+                isSaving: false,
                 message,
                 error: null,
                 firstName: '',
@@ -138,14 +123,14 @@ class UserForm extends React.Component {
                 window.location = '/feed';
             }
         } catch (e) {
-            this.setState({ isRequesting: false, error: e.message || e.error.message })
+            this.setState({ isSaving: false, error: e.message || e.error.message })
         }
     }
 
     render() {
         const {
             firstName, lastName, email, password, jobRole, department, address,
-            isRequesting, message, error, jobRoles, departments,
+            isRequesting, isSaving, message, error, jobRoles, departments,
         } = this.state;
 
         const jobRolesMap = jobRoles && jobRoles.map((role) => <option key={Math.random()} value={role.name}>{role.name}</option>);
@@ -270,7 +255,7 @@ class UserForm extends React.Component {
 
                     <div className="form-group">
                         <button type="submit" onClick={this.handleSubmit} disabled={isRequesting}>
-                            {isRequesting ? 'Saving...' : 'Save'}
+                            {isSaving ? 'Saving...' : 'Save'}
                         </button>
                     </div>
                 </form>

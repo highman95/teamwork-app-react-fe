@@ -1,7 +1,7 @@
 import React from 'react';
 
 import endPoints from '../../constants/endpoints';
-import { fetchToken, handleErrorResult } from '../../constants/helpers';
+import { fetchToken, fetchBot } from '../../constants/helpers';
 
 class DeletePost extends React.Component {
     constructor(props) {
@@ -27,7 +27,7 @@ class DeletePost extends React.Component {
         if (postId !== undefined && postType !== undefined) {
             this.setState({ isDeleting: true });
 
-            const url = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
+            const endPointX = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
             const fetchConfig = {
                 method: 'DELETE',
                 mode: 'cors',
@@ -38,13 +38,7 @@ class DeletePost extends React.Component {
             };
 
             try {
-                const response = await fetch(`${url}/${postId}`, fetchConfig)
-                const result = await response.json()
-
-                if (result.status === 'error') {
-                    handleErrorResult(result.error);
-                }
-
+                const result = await fetchBot(`${endPointX}/${postId}`, fetchConfig)
                 this.setState({ isDeleting: false, error: null, message: result.data.message });
             } catch (e) {
                 this.setState({ isDeleting: false, message: null, error: e.message || e.error.message })
