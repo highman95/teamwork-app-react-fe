@@ -32,7 +32,7 @@ class CommentForm extends React.Component {
     }
 
     async addComment(comment, postId, postType) {
-        if (postId !== undefined && postType !== undefined) {
+        if (!!postId && !!postType) {
             this.setState({ error: null, isSaving: true });
 
             const endPointX = (postType === 'gif') ? endPoints.gifs : endPoints.articles;

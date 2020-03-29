@@ -24,7 +24,7 @@ class DeletePost extends React.Component {
     }
 
     async deletePost(postId, postType) {
-        if (postId !== undefined && postType !== undefined) {
+        if (!!postId && !!postType) {
             this.setState({ isDeleting: true });
 
             const endPointX = (postType === 'gif') ? endPoints.gifs : endPoints.articles;

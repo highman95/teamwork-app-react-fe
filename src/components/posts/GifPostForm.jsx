@@ -49,7 +49,7 @@ class GifPostForm extends React.Component {
     }
 
     async addPost(title, image) {
-        if (title !== undefined && image !== undefined) {
+        if (!!title && !!image) {
             this.setState({ isSaving: true, message: null, error: null });
 
             const formData = new FormData();

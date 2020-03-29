@@ -23,7 +23,7 @@ class Post extends React.Component {
     componentDidMount() {
         const { post } = this.props;
 
-        if (post.id !== undefined) {
+        if (!!post.id) {
             this.setState({ post });
         } else {
             const { match: { params: { postType, postId } } } = this.props;
@@ -32,7 +32,7 @@ class Post extends React.Component {
     }
 
     async fetchPost(postId, postType) {
-        if (postId !== undefined && postType !== undefined) {
+        if (!!postId && !!postType) {
             this.setState({ error: null, isLoading: true });
 
             const endPointX = (postType === 'gif') ? endPoints.gifs : endPoints.articles;

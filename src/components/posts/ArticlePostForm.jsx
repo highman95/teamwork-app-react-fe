@@ -47,7 +47,7 @@ class ArticlePostForm extends React.Component {
     componentDidMount() {
         const { postId, isSaving } = this.state;
 
-        if (postId !== 0) {
+        if (!!postId) {
             this.setState({ isSaving: true });
             this.fetchPost(postId, 'article');
             this.setState({ isSaving });
@@ -64,7 +64,7 @@ class ArticlePostForm extends React.Component {
 
         const { title, article, postId } = this.state;
 
-        if (postId === 0) {
+        if (!postId) {
             this.addPost(title, article);
         } else {
             this.updatePost(postId, title, article);
@@ -72,7 +72,7 @@ class ArticlePostForm extends React.Component {
     }
 
     async addPost(title, article) {
-        if (title !== undefined && article !== undefined) {
+        if (!!title && !!article) {
             this.setState({ isSaving: true, message: null, error: null });
 
             const fetchConfig = {
@@ -87,6 +87,7 @@ class ArticlePostForm extends React.Component {
 
             try {
                 const result = await fetchBot(`${endPoints.articles}`, fetchConfig)
+                const { message } = result.data;
 
                 // const showPost = () => {
                 //     return (
@@ -95,8 +96,6 @@ class ArticlePostForm extends React.Component {
                 //         </div>
                 //     );
                 // };
-
-                const { message } = result.data;
                 // document.querySelector('#post-form-reporter').innerHTML += showPost();
 
                 this.setState({
@@ -109,7 +108,7 @@ class ArticlePostForm extends React.Component {
     }
 
     async fetchPost(postId, postType) {
-        if (postId !== undefined && postId !== 0 && postType !== undefined) {
+        if (!!postId && !!postType) {
             this.setState({ error: null, isLoading: true });
 
             const endPointX = (postType === 'gif') ? endPoints.gifs : endPoints.articles;
@@ -134,7 +133,7 @@ class ArticlePostForm extends React.Component {
     }
 
     async updatePost(postId, title, article) {
-        if (postId !== undefined && title !== undefined && article !== undefined) {
+        if (!!postId && !!title && !!article) {
             this.setState({ isSaving: true, message: null, error: null });
 
             const fetchConfig = {
