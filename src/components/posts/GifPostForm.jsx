@@ -5,7 +5,7 @@ import { fetchToken, fetchBot } from '../../constants/helpers';
 import './PostForm.css';
 import './Post.css';
 
-export function CreateGifPost() {
+export default function CreateGifPost() {
     return (
         <>
             <h3>Add Gif</h3>
@@ -33,7 +33,7 @@ class GifPostForm extends React.Component {
     }
 
     handleChange(event) {
-        let {
+        const {
             name, value, type, files,
         } = event.target;
         value = (type === 'file') ? files[0] : value;

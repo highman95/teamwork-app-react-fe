@@ -16,7 +16,7 @@ export const registerAuth = ({ token, firstName = '' }) => {
 };
 
 export const handleErrorResult = (error) => {
-    const isJWTExpired = error.includes('expired') && error.includes('jwt')
+    const isJWTExpired = (['expired', 'invalid'].includes(error) && ['token', 'jwt'].includes(error.toLowerCase()));
 
     if (!isJWTExpired) {
         throw new Error(error);
@@ -26,17 +26,17 @@ export const handleErrorResult = (error) => {
 };
 
 export const fetchBot = async (endPoints, options) => {
-    const response = await fetch(endPoints, options)
-    const result = await response.json()
+    const response = await fetch(endPoints, options);
+    const result = await response.json();
 
     if (result.status === 'error') {
         handleErrorResult(result.error);
     }
 
-    return result
+    return result;
 };
 
 export const signOut = () => {
     localStorage.removeItem(storageId);
     window.location = '/';
-}
+};
