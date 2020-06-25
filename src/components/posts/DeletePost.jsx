@@ -38,10 +38,10 @@ class DeletePost extends React.Component {
             };
 
             try {
-                const result = await fetchBot(`${endPointX}/${postId}`, fetchConfig)
+                const result = await fetchBot(`${endPointX}/${postId}`, fetchConfig);
                 this.setState({ isDeleting: false, error: null, message: result.data.message });
             } catch (e) {
-                this.setState({ isDeleting: false, message: null, error: e.message || e.error.message })
+                this.setState({ isDeleting: false, message: null, error: e.message || e.error.message });
             }
         }
     }

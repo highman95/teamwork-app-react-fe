@@ -59,8 +59,8 @@ class UserForm extends React.Component {
         };
 
         try {
-            const result = await fetchBot(endPoints.roles, fetchConfig)
-            const result2 = await fetchBot(endPoints.departments, fetchConfig)
+            const result = await fetchBot(endPoints.roles, fetchConfig);
+            const result2 = await fetchBot(endPoints.departments, fetchConfig);
 
             const jobRoles = result.data;
             const departments = result2.data;
@@ -69,7 +69,7 @@ class UserForm extends React.Component {
                 isRequesting: false, jobRole: jobRoles[0].name, jobRoles, department: departments[0].name, departments,
             });
         } catch (e) {
-            this.setState({ error: e.message || e.error.message, isRequesting: false })
+            this.setState({ error: e.message || e.error.message, isRequesting: false });
         }
     }
 
@@ -101,7 +101,7 @@ class UserForm extends React.Component {
         };
 
         try {
-            const result = await fetchBot(endPoints.signUp, fetchConfig)
+            const result = await fetchBot(endPoints.signUp, fetchConfig);
 
             const { message, token } = result.data;
             this.setState({
@@ -123,7 +123,7 @@ class UserForm extends React.Component {
                 window.location = '/feed';
             }
         } catch (e) {
-            this.setState({ isSaving: false, error: e.message || e.error.message })
+            this.setState({ isSaving: false, error: e.message || e.error.message });
         }
     }
 

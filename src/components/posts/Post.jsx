@@ -23,7 +23,7 @@ class Post extends React.Component {
     componentDidMount() {
         const { post } = this.props;
 
-        if (!!post.id) {
+        if (post.id) {
             this.setState({ post });
         } else {
             const { match: { params: { postType, postId } } } = this.props;
@@ -44,10 +44,10 @@ class Post extends React.Component {
             };
 
             try {
-                const result = await fetchBot(`${endPointX}/${postId}`, fetchConfig)
+                const result = await fetchBot(`${endPointX}/${postId}`, fetchConfig);
                 this.setState({ isLoading: false, error: null, post: result.data });
             } catch (e) {
-                this.setState({ isLoading: false, error: e.message || e.error.message })
+                this.setState({ isLoading: false, error: e.message || e.error.message });
             }
         }
     }
@@ -77,7 +77,7 @@ class Post extends React.Component {
                                 </div>
 
                                 <div className="post-content">
-                                    {!!post.article
+                                    {post.article
                                         ? <div className="post-content-text">{post.article}</div>
                                         : <img src={post.url} alt={`${post.title}-${Date.now()}`} className="post-content-image" />}
                                 </div>

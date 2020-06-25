@@ -47,7 +47,7 @@ class ArticlePostForm extends React.Component {
     componentDidMount() {
         const { postId, isSaving } = this.state;
 
-        if (!!postId) {
+        if (postId) {
             this.setState({ isSaving: true });
             this.fetchPost(postId, 'article');
             this.setState({ isSaving });
@@ -86,7 +86,7 @@ class ArticlePostForm extends React.Component {
             };
 
             try {
-                const result = await fetchBot(`${endPoints.articles}`, fetchConfig)
+                const result = await fetchBot(`${endPoints.articles}`, fetchConfig);
                 const { message } = result.data;
 
                 // const showPost = () => {
@@ -102,7 +102,7 @@ class ArticlePostForm extends React.Component {
                     isSaving: false, message, error: null, title: '', article: '',
                 });
             } catch (e) {
-                this.setState({ isSaving: false, message: null, error: e.message || e.error.message })
+                this.setState({ isSaving: false, message: null, error: e.message || e.error.message });
             }
         }
     }
@@ -120,14 +120,14 @@ class ArticlePostForm extends React.Component {
             };
 
             try {
-                const result = await fetchBot(`${endPointX}/${postId}`, fetchConfig)
+                const result = await fetchBot(`${endPointX}/${postId}`, fetchConfig);
                 const { title, article } = result.data;
 
                 this.setState({
                     isLoading: false, error: null, title, article,
                 });
             } catch (e) {
-                this.setState({ isLoading: false, error: e.message || e.error.message })
+                this.setState({ isLoading: false, error: e.message || e.error.message });
             }
         }
     }
@@ -147,12 +147,12 @@ class ArticlePostForm extends React.Component {
             };
 
             try {
-                const result = await fetchBot(`${endPoints.articles}/${postId}`, fetchConfig)
+                const result = await fetchBot(`${endPoints.articles}/${postId}`, fetchConfig);
                 const { message } = result.data;
 
                 this.setState({ isSaving: false, message, error: null });
             } catch (e) {
-                this.setState({ isSaving: false, message: null, error: e.message || e.error.message })
+                this.setState({ isSaving: false, message: null, error: e.message || e.error.message });
             }
         }
     }
@@ -187,7 +187,7 @@ class ArticlePostForm extends React.Component {
                                     {isSaving ? 'Saving...' : 'Save'}
                                 </button>
                                 {' '}
-                                <small><Link to='/feed'>Feed &rarr;</Link></small>
+                                <small><Link to="/feed">Feed &rarr;</Link></small>
                             </div>
                         </form>
                     </div>

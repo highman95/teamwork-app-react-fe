@@ -47,7 +47,7 @@ class CommentForm extends React.Component {
             };
 
             try {
-                await fetchBot(`${endPointX}/${postId}/comment`, fetchConfig)
+                await fetchBot(`${endPointX}/${postId}/comment`, fetchConfig);
 
                 const { onCommentSave } = this.props;
                 onCommentSave({
@@ -55,7 +55,7 @@ class CommentForm extends React.Component {
                 });
                 this.setState({ isSaving: false, error: null, comment: '' });
             } catch (e) {
-                this.setState({ isSaving: false, error: e.message || e.error.message })
+                this.setState({ isSaving: false, error: e.message || e.error.message });
             }
         }
     }
@@ -73,7 +73,7 @@ class CommentForm extends React.Component {
                         {isSaving ? 'Saving...' : 'Save'}
                     </button>
                     {' '}
-                    <small><Link to='/feed'>Feed &rarr;</Link></small>
+                    <small><Link to="/feed">Feed &rarr;</Link></small>
                 </form>
             </div>
         );

@@ -30,10 +30,10 @@ class Feed extends React.Component {
         };
 
         try {
-            const result = await fetchBot(endPoints.feeds, fetchConfig)
+            const result = await fetchBot(endPoints.feeds, fetchConfig);
             this.setState({ isLoading: false, error: null, feeds: result.data });
         } catch (e) {
-            this.setState({ isLoading: false, error: e.message || e.error.message })
+            this.setState({ isLoading: false, error: e.message || e.error.message });
         }
     }
 

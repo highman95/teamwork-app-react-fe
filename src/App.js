@@ -18,7 +18,7 @@ import NotFoundComponent from './components/NotFound';
 class App extends React.Component {
     static logOut(event) {
         event.preventDefault();
-        signOut()
+        signOut();
         // return <Redirect to="/" />;
     }
 

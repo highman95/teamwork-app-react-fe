@@ -27,7 +27,7 @@ class SignIn extends React.Component {
         event.preventDefault();
 
         const { email, password } = this.state;
-        this.signIn(email, password)
+        this.signIn(email, password);
     }
 
     async signIn(email, password) {
@@ -42,14 +42,14 @@ class SignIn extends React.Component {
         };
 
         try {
-            const result = await fetchBot(endPoints.signIn, fetchData)
+            const result = await fetchBot(endPoints.signIn, fetchData);
             this.setState({ error: null, isSigningIn: false, password: '' });
 
             const { token, firstName } = result.data;
             localStorage.setItem(storageId, JSON.stringify({ token, firstName }));
             window.location = '/feed';
         } catch (e) {
-            this.setState({ error: e.message || e.error.message, isSigningIn: false, password: '' })
+            this.setState({ error: e.message || e.error.message, isSigningIn: false, password: '' });
         }
     }
 

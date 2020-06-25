@@ -66,14 +66,14 @@ class GifPostForm extends React.Component {
             };
 
             try {
-                const result = await fetchBot(endPoints.gifs, fetchConfig)
+                const result = await fetchBot(endPoints.gifs, fetchConfig);
                 const { message } = result.data;
 
                 this.setState({
                     isSaving: false, message, error: null, title: '', image: '',
                 });
             } catch (e) {
-                this.setState({ isSaving: false, message: null, error: e.message || e.error.message })
+                this.setState({ isSaving: false, message: null, error: e.message || e.error.message });
             }
         }
     }
